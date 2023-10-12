@@ -1,2 +1,1 @@
-# my-first-project-website
-e commerce website
+# My first project frontend e-commerce website
