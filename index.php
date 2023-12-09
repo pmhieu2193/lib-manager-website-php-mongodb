@@ -9,7 +9,6 @@
 </head>
 <body>
     <?php include("nav.php"); ?>
-
     <!--hero section-->
     <header class="hero-section">
         <div class="content">
@@ -32,7 +31,7 @@
                 echo '<div class="product-card">
                     <div class="product-image">
                         <span class="discount-tag">đang giảm 20%</span>
-                        <img src="';?><?php echo  $document->anh_bia;?><?php echo'" class="product-thumb" alt="" onclick="location.href=';?><?php echo"book.php?_id="?><?php echo $document->ma_sach;?><?php echo "'"?>
+                        <img src="';?><?php echo  $document->anh_bia;?><?php echo'" class="product-thumb" alt="" onclick="location.href=';?><?php echo"'book.php?_id="?><?php echo $document->ma_sach;?><?php echo "'"?>
                         <?php echo'"><button class="card-btn">thêm vào giỏ hàng</button>
                     </div>
                     <div class="product-info">
