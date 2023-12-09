@@ -384,3 +384,47 @@ tr:hover{
 .see-full:hover{
     color: red;
 }
+
+  
+.popup-form {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1;
+  }
+.form-hero{
+    display: flex;
+    justify-content: space-around;
+}
+
+.text-form{
+    display: block;
+    width: 300px;
+    height: 40px;
+    padding: 20px;
+    border-radius: 5px;
+    background: #fff;
+    border: none;
+    outline: none;
+    color: #383838;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+    font-family: 'Mulish', sans-serif;
+}
+
+.close-but{
+    cursor: pointer;
+    right: 1%;
+    top: 1%;
+    position: fixed;
+    padding: 5px;
+    border-radius: 7px;
+    background-color: #f2f2f2;
+}
