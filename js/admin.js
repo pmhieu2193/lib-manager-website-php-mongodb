@@ -26,15 +26,21 @@ function closeForm() {
   popup.style.display = "none";
 }
 
-function openForm2() {
-  var popup = document.getElementById("popup-form2");
-  popup.style.display = "block";
-}
 
-function closeForm2() {
-  var popup = document.getElementById("popup-form2");
-  popup.style.display = "none";
-}
+
+
+  function openForm2(documentId) {
+    console.log("Document ID: " + documentId);
+    document.getElementById("document_id").value = documentId;
+    var popupForm = document.getElementById("popup-form2");
+    popupForm.style.display = "block";
+  }
+  
+  function closeForm2() {
+    var popup = document.getElementById("popup-form2");
+    popup.style.display = "none";
+  }
+
 
 var imageInput = document.getElementById('image');
 imageInput.addEventListener('change', function(event) {

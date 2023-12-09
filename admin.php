@@ -56,8 +56,8 @@ include("connection.php");
         $ma_nxb = $_POST['publisher'];
         $ngay_nhap = $_POST['date'];
 
-        $anh_bia = realpath(__DIR__ ."C:\\xampp\\htdocs\\lib-manager-website-php-mongodb\\img") . DIRECTORY_SEPARATOR . $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], $anh_bia);
+        $anh_bia = "http://localhost/lib-manager-website-php-mongodb/img/" . $_FILES['image']['name'];
+        move_uploaded_file($_FILES['image']['tmp_name'], "C:/xampp/htdocs/lib-manager-website-php-mongodb/img/" . $_FILES['image']['name']);
 
 
         $data = [
@@ -77,7 +77,11 @@ include("connection.php");
         ];
 
         // Chèn dữ liệu vào collection
-        $result = $collection->insertOne($data);
+        if ($result = $collection->insertOne($data) > 0) {
+            echo 'Thêm sách thành công!';
+        } else {
+            echo "Thêm sách thất bại";
+        }
 
         header("Location: admin.php");
         exit;
@@ -142,6 +146,46 @@ include("connection.php");
         <img src="img/no-products.png" class="no-product-image hide" alt="">
         <!-- card -->
         <?php
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Xử lý dữ liệu khi form được submit
+            $updatedData = array(
+                'ten_sach' => $_POST['name2'],
+                'so_luong' => intval($_POST['quantity2']),
+                'mo_ta' => $_POST['description2'],
+                'tac_gia' => $_POST['author2'],
+                'ngon_ngu' => $_POST['language2'],
+                'nam_xuat_ban' => $_POST['year2'],
+                'vi_tri' => $_POST['location2'],
+                'trang_thai_sach' => intval($_POST['status2']),
+                'ma_rank' => intval($_POST['rank2']),
+                'ma_the_loai' => intval($_POST['category2']),
+                'ma_nxb' => intval($_POST['publisher2']),
+                'ngay_nhap' => new MongoDB\BSON\UTCDateTime(strtotime($_POST['date2']) * 1000),
+                // Các trường dữ liệu khác bạn muốn cập nhật
+            );
+            
+            if (!empty($_FILES['image2']['name'])) {
+                // Lấy tên tệp tin và đường dẫn tạm thời của tệp tin ảnh mới
+                $newImageName = $_FILES['image2']['name'];
+                $newImagePath = "C:/xampp/htdocs/lib-manager-website-php-mongodb/img/" . $newImageName;
+        
+                // Di chuyển tệp tin ảnh mới vào thư mục img
+                move_uploaded_file($_FILES['image2']['tmp_name'], $newImagePath);
+        
+                // Cập nhật đường dẫn ảnh mới trong dữ liệu cần cập nhật
+                $updatedData['anh_bia'] = "http://localhost/lib-manager-website-php-mongodb/img/" . $newImageName;
+            }
+        
+            $filter = array('_id' => new MongoDB\BSON\ObjectId($_POST['document_id']));
+            $updateResult = $collection->updateOne($filter, ['$set' => $updatedData]);
+
+            if ($updateResult->getModifiedCount() > 0) {
+                echo "Cập nhật thành công!";
+            } else {
+                echo "Không có sự thay đổi trong dữ liệu.";
+            }
+        }
+
         $collection = $database->selectCollection('sach');
         $result = $collection->find([]);
         echo '<div class="product-container">';
@@ -151,7 +195,7 @@ include("connection.php");
             echo '<span class="tag">Chỉnh sửa</span>';
             echo '<img src="' . $document->anh_bia . '" class="product-thumb" alt="">';
             echo '<button class="amount-product">Số lượng: 20</button>';
-            echo '<button class="card-action-btn edit-btn" onclick="openForm2()"><img src="img/edit.png" alt=""></button>';
+            echo '<button class="card-action-btn edit-btn" onclick="openForm2(\'' . (string)$document->_id . '\')"><img src="img/edit.png" alt=""></button>';
             echo '<button class="card-action-btn open-btn"><img src="img/open.png" alt=""></button>';
             echo '<button class="card-action-btn delete-popup-btn"><img src="img/delete.png" alt=""></button>';
             echo '</div>';
@@ -171,49 +215,51 @@ include("connection.php");
     <div class="popup-form" id="popup-form2">
         <h2>Sửa sản phẩm</h2>
         <button class="close-but" onclick="closeForm2()">X</button>
-        <form class="form-hero">
+        <form class="form-hero" method="POST" action="" enctype="multipart/form-data">
+            <input type="hidden" id="document_id" name="document_id" value="">
+
             <div class="form-admin1">
                 <label for="name">Tên sách:</label>
-                <input class="text-form" type="text" id="name" name="name" required><br><br>
+                <input class="text-form" type="text" id="name2" name="name2" required><br><br>
 
                 <label for="quantity">Số lượng:</label>
-                <input class="text-form" type="number" id="quantity" name="quantity" required><br><br>
+                <input class="text-form" type="number" id="quantity2" name="quantity2" required><br><br>
 
                 <label for="description">Mô tả:</label>
-                <input class="text-form" type="text" id="description" name="description" required><br><br>
+                <input class="text-form" type="text" id="description2" name="description2" required><br><br>
 
                 <label for="author">Tác giả:</label>
-                <input class="text-form" class="text-form" type="text" id="author" name="author" required><br><br>
+                <input class="text-form" class="text-form" type="text" id="author2" name="author2" required><br><br>
 
                 <label for="language">Ngôn ngữ:</label>
-                <input class="text-form" type="text" id="language" name="language" required><br><br>
+                <input class="text-form" type="text" id="language2" name="language2" required><br><br>
 
                 <label for="year">Năm xuất bản:</label>
-                <input class="text-form" type="text" id="year" name="year" required><br><br>
+                <input class="text-form" type="text" id="year2" name="year2" required><br><br>
             </div>
             <div class="form-admin2">
                 <label for="location">Vị trí:</label>
-                <input class="text-form" type="text" id="location" name="location" required><br><br>
+                <input class="text-form" type="text" id="location2" name="location2" required><br><br>
 
                 <label for="status">Trạng thái sách:</label>
-                <input class="text-form" type="text" id="status" name="status" required><br><br>
+                <input class="text-form" type="text" id="status2" name="status2" required><br><br>
 
                 <label for="rank">Mã rank:</label>
-                <input class="text-form" type="text" id="rank" name="rank" required><br><br>
+                <input class="text-form" type="text" id="rank2" name="rank2" required><br><br>
 
                 <label for="category">Mã thể loại:</label>
-                <input class="text-form" type="text" id="category" name="category" required><br><br>
+                <input class="text-form" type="text" id="category2" name="category2" required><br><br>
 
                 <label for="publisher">Mã nhà xuất bản:</label>
-                <input class="text-form" type="text" id="publisher" name="publisher" required><br><br>
+                <input class="text-form" type="text" id="publisher2" name="publisher2" required><br><br>
 
                 <label for="date">Ngày Nhập:</label>
-                <input type="date" id="date" name="date" required><br><br>
+                <input type="date" id="date2" name="date2" required><br><br>
 
                 <label for="image">Ảnh:</label>
-                <input type="file" id="image" name="image" accept="image/*" required><br><br>
+                <input type="file" id="image2" name="image2" accept="image/*" required><br><br>
 
-                <input type="submit" value="Thêm">
+                <input type="submit" value="Update">
             </div>
         </form>
     </div>
