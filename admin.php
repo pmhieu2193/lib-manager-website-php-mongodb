@@ -161,24 +161,19 @@ include("connection.php");
                 'ma_the_loai' => intval($_POST['category2']),
                 'ma_nxb' => intval($_POST['publisher2']),
                 'ngay_nhap' => new MongoDB\BSON\UTCDateTime(strtotime($_POST['date2']) * 1000),
-                // Các trường dữ liệu khác bạn muốn cập nhật
             );
             
             if (!empty($_FILES['image2']['name'])) {
-                // Lấy tên tệp tin và đường dẫn tạm thời của tệp tin ảnh mới
                 $newImageName = $_FILES['image2']['name'];
                 $newImagePath = "C:/xampp/htdocs/lib-manager-website-php-mongodb/img/" . $newImageName;
-        
-                // Di chuyển tệp tin ảnh mới vào thư mục img
                 move_uploaded_file($_FILES['image2']['tmp_name'], $newImagePath);
-        
-                // Cập nhật đường dẫn ảnh mới trong dữ liệu cần cập nhật
                 $updatedData['anh_bia'] = "http://localhost/lib-manager-website-php-mongodb/img/" . $newImageName;
             }
-        
+            
             $filter = array('_id' => new MongoDB\BSON\ObjectId($_POST['document_id']));
             $updateResult = $collection->updateOne($filter, ['$set' => $updatedData]);
 
+            
             if ($updateResult->getModifiedCount() > 0) {
                 echo "Cập nhật thành công!";
             } else {
@@ -186,6 +181,7 @@ include("connection.php");
             }
         }
 
+        
         $collection = $database->selectCollection('sach');
         $result = $collection->find([]);
         echo '<div class="product-container">';
@@ -197,7 +193,7 @@ include("connection.php");
             echo '<button class="amount-product">Số lượng: 20</button>';
             echo '<button class="card-action-btn edit-btn" onclick="openForm2(\'' . (string)$document->_id . '\')"><img src="img/edit.png" alt=""></button>';
             echo '<button class="card-action-btn open-btn"><img src="img/open.png" alt=""></button>';
-            echo '<button class="card-action-btn delete-popup-btn"><img src="img/delete.png" alt=""></button>';
+            echo '<button class="card-action-btn delete-popup-btn" onclick="openForm3(\'' . (string)$document->_id . '\')"><img src="img/delete.png" alt=""></button>';
             echo '</div>';
             echo '<div class="product-info">';
             echo '<h2 class="product-brand">' . $document->ten_sach . '</h2>';
@@ -263,6 +259,18 @@ include("connection.php");
             </div>
         </form>
     </div>
+
+
+<div class="popup-form" id="popup-form3">
+    <h2>Ẩn/Hiện Sản Phẩm</h2>
+    <button class="close-but" onclick="closeForm3()">X</button>
+    <form class="form-hero" method="POST" action="admin.php">
+        <input type="hidden" id="document_id" name="document_id" value="">
+        <p>Bạn có muốn ẩn/hiện sách?</p>
+        <input type="submit" name="hide_show_submit" value="Ẩn/Hiện">
+    </form>
+</div>
+
 
     <script src="js/admin.js"></script>
 </body>

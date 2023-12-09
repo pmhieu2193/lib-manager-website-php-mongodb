@@ -26,38 +26,46 @@ function closeForm() {
   popup.style.display = "none";
 }
 
+function openForm2(documentId) {
+  console.log("Document ID: " + documentId);
+  document.getElementById("document_id").value = documentId;
+  var popupForm = document.getElementById("popup-form2");
+  popupForm.style.display = "block";
+}
 
+function closeForm2() {
+  var popup = document.getElementById("popup-form2");
+  popup.style.display = "none";
+}
 
+function openForm3(documentId) {
+  console.log("Document ID: " + documentId);
+  document.getElementById("document_id").value = documentId;
+  var popupForm = document.getElementById("popup-form3");
+  popupForm.style.display = "block";
+}
 
-  function openForm2(documentId) {
-    console.log("Document ID: " + documentId);
-    document.getElementById("document_id").value = documentId;
-    var popupForm = document.getElementById("popup-form2");
-    popupForm.style.display = "block";
-  }
-  
-  function closeForm2() {
-    var popup = document.getElementById("popup-form2");
-    popup.style.display = "none";
-  }
-
+function closeForm3() {
+  var popup = document.getElementById("popup-form3");
+  popup.style.display = "none";
+}
 
 var imageInput = document.getElementById('image');
-imageInput.addEventListener('change', function(event) {
+imageInput.addEventListener('change', function (event) {
   var file = event.target.files[0];
   var reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     var imageData = e.target.result;
   };
   reader.readAsDataURL(file);
 });
 //alert
-const showAlert = (msg) =>{
-    let alertBox = document.querySelector('.alert-box');
-    let alertMsg = document.querySelector('.alert-msg');
-    alertMsg.innerHTML = msg;
-    alertBox.classList.add('show');
-    setTimeout(() => {
-        alertBox.classList.remove('show');
-    }, 3000);
+const showAlert = (msg) => {
+  let alertBox = document.querySelector('.alert-box');
+  let alertMsg = document.querySelector('.alert-msg');
+  alertMsg.innerHTML = msg;
+  alertBox.classList.add('show');
+  setTimeout(() => {
+    alertBox.classList.remove('show');
+  }, 3000);
 }
