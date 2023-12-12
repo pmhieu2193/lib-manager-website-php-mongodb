@@ -17,7 +17,7 @@
 // })
 
 // JavaScript để mở và đóng popup form
-<script>
+
 function showPopup(productId) {
     var overlay = document.getElementById('overlay');
     overlay.style.display = 'block';
@@ -53,7 +53,7 @@ function updateProductStatus(productId, status) {
     };
     xhr.send('update_status=1&product_id=' + productId + '&status=' + status);
 }
-</script>
+
 
 var imageInput = document.getElementById('image');
 imageInput.addEventListener('change', function (event) {

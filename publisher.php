@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
+<?php
+include("connection.php");
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +17,7 @@
     <link rel="stylesheet" href="css/admin.css">
 
 </head>
+
 <body>
     <img src="img/loader.gif" class="loader" alt="">
 
@@ -40,7 +45,7 @@
     <div class="product-listing">
         <div class="add-product">
             <p class="add-product-title">quản lý user</p>
-            <button class="btn btn-new-product" id="new-user" onclick="location.href='addProduct.html'">	&#43; thêm user</button>
+            <a href="editPublisher.php"><button class="btn btn-new-product" id="new-user">&#43;Thêm Nhà Xuất Bản</button></a>
         </div>
         <div class="box">
             <select class="select">
@@ -59,27 +64,55 @@
             </select>
             <div class="search">
                 <input type="text" placeholder="Tìm kiếm...">
-                <button class="search-btn">&#9906; Tìm kiếm</button>                       
+                <button class="search-btn">&#9906; Tìm kiếm</button>
             </div>
         </div>
         <div class="small-container oder-page">
             <table>
                 <tr>
-                    <th>Tên tài khoản</th>
-                    <th>Tên người dùng</th>
-                    <th>Quyền hạn</th>
+                    <th>Tên Nhà Xuất Bản</th>
+                    <th>Địa Chỉ Nhà Xuất Bản</th>
+                    <th>Số Điện Thoại</th>
                     <th class="table-btn-zone">Hành động</th>
                 </tr>
-                <tr>
-                    <td><a>happynewyear2023</a>
-                    <td><a>Trần Dần</a>
-                    <td><p style="color: red">Administrator</p></td>
-                    <td><button class="confirm-btn">chỉnh sửa</button><button class="canceled-btn">xoá</button></td>
-                </tr>
-            </div>
+                <?php
+                $collection = $database->selectCollection('nha_xuat_ban');
+                $result = $collection->find([]);
+
+                foreach ($result as $document) {
+                    echo '<tr>';
+                    echo '<td><a>' . $document->ten_nxb . '</a></td>';
+                    echo '<td><a>' . $document->dia_chi_nxb . '</a></td>';
+                    echo '<td><p style="color: red">' . $document->sdt_nxb . '</p></td>';
+                    echo '<td><a href="editPublisher.php?id=' . $document->_id . '" class="confirm-btn">chỉnh sửa</a>';
+                ?>
+                    <form method="post" style="display:inline;">
+                        <input type="hidden" name="delete_id" value="<?= $document->_id ?>">
+                        <button type="submit" class="canceled-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">xoá</button>
+                    </form>
+                <?php
+                    echo '</td>';
+                    echo '</tr>';
+                }
+                if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_id'])) {
+                    $delete_id = $_POST['delete_id'];
+                    $result = $collection->deleteOne(['_id' => new MongoDB\BSON\ObjectID($delete_id)]);
+
+                    if ($result->getDeletedCount() > 0) {
+                        echo 'Xóa nhà xuất bản thành công!';
+                    } else {
+                        echo 'Xóa nhà xuất bản thất bại';
+                    }
+                    header("Location: publisher.php");
+                    exit;
+                }
+                ?>
+
+        </div>
         </table>
     </div>
 
     <script src="js/admin.js"></script>
 </body>
+
 </html>

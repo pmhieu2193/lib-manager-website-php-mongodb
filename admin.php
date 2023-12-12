@@ -32,25 +32,9 @@ include("connection.php");
             <p class="add-product-title name-admin">Chào mừng Hiếu</p>
             <button class="btn btn-new-product" id="new-product" onclick="location.href='login.html'">Đăng xuất</button>
         </div>
-        <p class="add-product-title nav-link" href="publisher.php">quản lý user</p>
+        <a class="add-product-title nav-link" href="publisher.php">quản lý user</a>
     </div>
     <!--products list-->
-    <?php
-    $collection = $database->selectCollection('sach');
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $product_id = $_POST['product_id'];
-        $status = $_POST['status'];
-
-        $result = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => ['trang_thai_sach' => $status]]);
-
-        if ($result->getModifiedCount() > 0) {
-            echo 'Cập nhật trạng thái thành công!';
-        } else {
-            echo 'Không có sự thay đổi hoặc không tìm thấy sản phẩm.';
-        }
-    }
-    ?>
 
     <div class="product-listing">
         <div class="add-product">

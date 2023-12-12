@@ -25,7 +25,6 @@ include("connection.php");
 
     <?php
     $collection = $database->selectCollection("sach");
-
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['form_submitted'])) {
         $ten_sach = $_POST['name'];
         $so_luong = (int)$_POST['quantity'];
@@ -34,12 +33,12 @@ include("connection.php");
         $ngon_ngu = $_POST['language'];
         $nam_xuat_ban = $_POST['year'];
         $vi_tri = $_POST['location'];
-        $trang_thai_sach = (int)$_POST['status']; 
-        $ma_rank = (int)$_POST['rank']; 
-        $ma_the_loai = (int)$_POST['category']; 
-        $ma_nxb = (int)$_POST['publisher']; 
+        $trang_thai_sach = (int)$_POST['status'];
+        $ma_rank = (int)$_POST['rank'];
+        $ma_the_loai = (int)$_POST['category'];
+        $ma_nxb = (int)$_POST['publisher'];
         $ngay_nhap = $_POST['date'];
-        $product_id = $_POST['product_id']; 
+        $product_id = $_POST['product_id'];
         $anh_bia = "http://localhost/lib-manager-website-php-mongodb/img/" . $_FILES['image']['name'];
         move_uploaded_file($_FILES['image']['tmp_name'], "C:/xampp/htdocs/lib-manager-website-php-mongodb/img/" . $_FILES['image']['name']);
         $data = [
@@ -57,8 +56,12 @@ include("connection.php");
             'ngay_nhap' => new MongoDB\BSON\UTCDateTime(strtotime($ngay_nhap) * 1000),
             'anh_bia' => $anh_bia,
         ];
-
         if (empty($product_id)) {
+            //Tự động tăng
+            $lastProduct = $collection->findOne([], ['sort' => ['ma_sach' => -1]]);
+            $lastMaSach = $lastProduct ? $lastProduct['ma_sach'] : 0;
+            $maSach = $lastMaSach + 1;
+            $data['ma_sach'] = $maSach;
             $result = $collection->insertOne($data);
             if ($result->getInsertedCount() > 0) {
                 echo 'Thêm sách thành công!';
@@ -71,7 +74,7 @@ include("connection.php");
             if ($result->getModifiedCount() > 0) {
                 echo 'Cập nhật sách thành công!';
             } else {
-                echo 'Không có sự thay đổi. Có thể do dữ liệu không thay đổi hoặc không tìm thấy sản phẩm.';
+                echo 'Không có sự thay đổi';
             }
         }
         header("Location: admin.php");
