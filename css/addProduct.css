@@ -7,13 +7,7 @@ body{
     margin: 20px auto 50px;
 }
 
-input, textarea{
-    font-weight: 500;
-}
 
-input:not(input[type="checkbox"]){
-    width: 100%;
-}
 
 textarea{
     width: 100%;

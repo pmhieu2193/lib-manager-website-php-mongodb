@@ -15,40 +15,45 @@
 //         showAlert('Xoá thất bại');
 //     }
 // })
+
 // JavaScript để mở và đóng popup form
-function openForm() {
-  var popup = document.getElementById("popup-form");
-  popup.style.display = "block";
+<script>
+function showPopup(productId) {
+    var overlay = document.getElementById('overlay');
+    overlay.style.display = 'block';
+
+    var hideButton = document.getElementById('hideButton');
+    hideButton.onclick = function() {
+        updateProductStatus(productId, 0);
+        overlay.style.display = 'none';
+        alert('Ẩn sản phẩm thành công!');
+    };
+
+    var showButton = document.getElementById('showButton');
+    showButton.onclick = function() {
+        updateProductStatus(productId, 1);
+        overlay.style.display = 'none';
+        alert('Hiển thị sản phẩm thành công!');
+    };
+
+    var closePopup = document.getElementById('closePopup');
+    closePopup.onclick = function() {
+        overlay.style.display = 'none';
+    };
 }
 
-function closeForm() {
-  var popup = document.getElementById("popup-form");
-  popup.style.display = "none";
+function updateProductStatus(productId, status) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'admin.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            location.reload();
+        }
+    };
+    xhr.send('update_status=1&product_id=' + productId + '&status=' + status);
 }
-
-function openForm2(documentId) {
-  console.log("Document ID: " + documentId);
-  document.getElementById("document_id").value = documentId;
-  var popupForm = document.getElementById("popup-form2");
-  popupForm.style.display = "block";
-}
-
-function closeForm2() {
-  var popup = document.getElementById("popup-form2");
-  popup.style.display = "none";
-}
-
-function openForm3(documentId) {
-  console.log("Document ID: " + documentId);
-  document.getElementById("document_id").value = documentId;
-  var popupForm = document.getElementById("popup-form3");
-  popupForm.style.display = "block";
-}
-
-function closeForm3() {
-  var popup = document.getElementById("popup-form3");
-  popup.style.display = "none";
-}
+</script>
 
 var imageInput = document.getElementById('image');
 imageInput.addEventListener('change', function (event) {

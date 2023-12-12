@@ -13,13 +13,7 @@
 <body>
     
 <?php include("nav.php"); ?>
-    <!--hero section-->
-    <header class="hero-section">
-        <div class="content">
-            <img src="img/light-logo.png" class="logo" alt="">
-            <p class="sub-heading">Biến chiến trường thành sân khấu của bạn</p>
-        </div>
-    </header>
+
 
     <?php
 if (isset($_GET['timkiem'])) {
