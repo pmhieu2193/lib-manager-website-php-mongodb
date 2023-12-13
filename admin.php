@@ -25,7 +25,6 @@ include("connection.php");
         <p class="alert-msg">Thông báo lỗi</p>
     </div>
     <img src="img/dark-logo.png" class="logo" alt="">
-
     <div class="nav-space">
         <div class="nav-admin">
             <img src="img/user.png">
@@ -48,7 +47,7 @@ include("connection.php");
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             $product_id = $_POST['product_id'];
             $status = (int)$_POST['status'];
-            
+
             $result = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => ['trang_thai_sach' => $status]]);
 
             if ($result->getModifiedCount() > 0) {
@@ -60,22 +59,21 @@ include("connection.php");
             exit;
         }
         $result = $collection->find([]);
-        echo '<div class="product-container">';
+        echo '<div class="product-container2">';
         foreach ($result as $document) {
-            echo '<div class="product-card">';
+            echo '<div class="product-card2">';
             echo '<div class="product-image">';
-            echo '<span class="tag">Chỉnh sửa</span>';
+            echo '<span class="tag"></span>';
             echo '<img src="' . $document->anh_bia . '" class="product-thumb" alt="">';
-            echo '<button class="amount-product">Số lượng: 20</button>';
-            echo '<a href="editProduct.php?id=' . $document['_id'] . '" class="card-action-btn edit-btn"><img src="img/edit.png" alt=""></a>';
-            echo '<button type="button" class="card-action-btn delete-popup-btn" onclick="showPopup(\'' . $document['_id'] . '\')"><img src="img/delete.png" alt=""></button>            ';
+            echo '<button class="amount-product">Số Lượng: ' . $document->so_luong . '</button>';
+            echo '<a href="editProduct.php?id=' . $document['_id'] . '" class="card-action-btn edit-btn"><img class="img-edit" src="img/edit.png" alt=""></a>';
+            echo '<button class="card-action-btn open-btn" onclick="showPopup(\'' . $document['_id'] . '\')"><img src="img/open.png" alt=""></button>';
             echo '</div>';
             echo '<div class="product-info">';
-            echo '<h2 class="product-brand">' . $document->ten_sach . '</h2>';
-            echo '<p class="product-short-des">' . $document->so_luong . '</p>';
-            echo '<p class="product-short-des">' . $document->ngay_nhap . '</p>';
-            echo '<p class="product-short-des">' . $document->tac_gia . '</p>';
-            echo '<p class="product-short-des">' . $document->ngon_ngu . '</p>';
+            echo '<h2 class="book-brand">' . $document->ten_sach . '</h2>';
+            echo '<p class="product-short-des2">Tác giả: ' . $document->tac_gia . '</p>';
+            echo '<p class="product-short-des2">Ngôn ngữ: ' . $document->ngon_ngu . '</p>';
+            echo '<p class="product-short-des2">Nhà Xuất Bản: ' . $document->ma_nxb . '</p>';
             echo '</div>';
             echo '</div>';
         }
@@ -85,9 +83,16 @@ include("connection.php");
     <div id="overlay" class="overlay">
         <div id="popup" class="popup">
             <!-- Nội dung popup ở đây -->
-            <button id="hideButton" class="close-btn">Ẩn</button>
-            <button id="showButton" class="close-btn">Hiển thị</button>
-            <button id="closePopup" class="close-btn">Đóng</button>
+            <h3 style="margin-bottom: 20px;">Bạn có muốn Ẩn/Hiện Sách?</h3>
+            <div class="hero-popup">
+                <div class="item-popup">
+                    <button id="hideButton" class="close-btn2">Ẩn</button>
+                    <button id="showButton" class="close-btn">Hiện</button>
+                </div>
+                <div>
+                    <button id="closePopup" class="close-btn3">Đóng</button>
+                </div>
+            </div>
         </div>
     </div>
     <script src="js/admin.js"></script>

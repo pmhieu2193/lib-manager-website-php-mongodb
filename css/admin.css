@@ -70,10 +70,7 @@ padding-left: 0px;
     display: none;
 }
 /* //// */
-.product-container{
-    padding: 0;
-    height: 525px;
-}
+
 
 .tag{
     position: absolute;
@@ -93,7 +90,7 @@ padding-left: 0px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1 px solid black;
+    border: 1px solid black;
     outline: none;
     transition: 0.5s;
     background: #ffffff;
@@ -103,7 +100,7 @@ padding-left: 0px;
 }
 
 .card-action-btn img{
-    height: 18px;
+    height: 21px;
 }
 
 .open-btn{
@@ -120,7 +117,7 @@ padding-left: 0px;
     border: 4px solid red;
 }
 
-.product-card:hover .card-action-btn{
+.product-card2:hover .card-action-btn{
     opacity: 1;
     pointer-events: all;
 }
@@ -431,20 +428,109 @@ tr:hover{
     z-index: 1;
 }
 
-/* Style cho popup */
 .popup {
+    left: 43%;
+    bottom: 50%;
+    position: absolute;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Style cho nút đóng */
+.book-brand{
+    font-family:-webkit-body;
+
+}
+
+.img-edit{
+    top: 20%;
+    position: absolute;
+    left: 24%;
+}
+
+.hero-popup{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .close-btn {
-    background-color: #f00;
+    background-color: rgb(20, 219, 49);
     color: #fff;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.close-btn2 {
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn3{
+    background-color: rgb(116, 116, 116);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.item-popup{
+    margin: 15px;
+}
+
+.product-short-des2{
+    font-family: -webkit-body;
+    margin-top: 5px;
+    color:#383838;
+    padding: 5px 0px;
+}
+
+.product-card2{
+    flex: 0 0 auto;
+    width: 85%;
+    height: 450px;
+}
+
+.product-container2{
+    padding: 50px 0vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: auto;
+    grid-row-gap: 70px
+}
+
+.head-form{
+    font-size: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.label-form{
+    font-size: 20px;
+}
+
+.submit-form{
+    font-size: 15px;
+    padding: 10px;
+    background-color: rgb(77, 216, 77);
+    border-radius: 10px;
+}
+
+.submit-form2{
+    text-decoration: none;
+    color: #fff;
+    margin-left: 10px;
+    border: 2px solid black;
+    font-size: 16px;
+    padding: 10px;
+    background-color: rgb(225, 45, 45);
+    border-radius: 10px;
 }

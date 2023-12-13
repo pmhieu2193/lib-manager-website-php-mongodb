@@ -17,10 +17,6 @@ include("connection.php");
 
 <body>
     <img src="img/loader.gif" class="loader" alt="">
-    <div class="alert-box">
-        <img src="img/error.png" class="alert-img" alt="">
-        <p class="alert-msg">Lỗi</p>
-    </div>
     <img src="img/dark-logo.png" class="logo" alt="">
 
     <?php
@@ -85,25 +81,38 @@ include("connection.php");
         $result = $collection->findOne(['_id' => new MongoDB\BSON\ObjectID($product_id)]);
         if ($result) {
     ?>
-            <form method="post" enctype="multipart/form-data">
-                <h3>Chinh sua sach</h3>
-                <input class="text-form" type="text" id="name" name="name" placeholder="Tên Sách" value="<?= $result['ten_sach'] ?>">
-                <input class="text-form" type="number" id="quantity" name="quantity" placeholder="Số Lượng" value="<?= $result['so_luong'] ?>">
-                <input class="text-form" type="text" id="author" name="author" placeholder="Tác Giả" value="<?= $result['tac_gia'] ?>">
-                <input class="text-form" type="text" id="language" name="language" placeholder="Ngôn Ngữ" value="<?= $result['ngon_ngu'] ?>">
-                <input class="text-form" type="text" id="year" name="year" placeholder="Năm xuất bản" value="<?= $result['nam_xuat_ban'] ?>">
-                <input class="text-form" type="text" id="location" name="location" placeholder="Vị Trí" value="<?= $result['vi_tri'] ?>">
-                <input class="text-form" type="text" id="status" name="status" placeholder="Trạng Thái Sách" value="<?= $result['trang_thai_sach'] ?>">
-                <input class="text-form" type="text" id="rank" name="rank" placeholder="Mã Rank" value="<?= $result['ma_rank'] ?>">
-                <input class="text-form" type="text" id="category" name="category" placeholder="Mã Thể Loại" value="<?= $result['ma_the_loai'] ?>">
-                <input class="text-form" type="text" id="publisher" name="publisher" placeholder="Mã Nhà Xuất Bản" value="<?= $result['ma_nxb'] ?>">
+            <form class="form-total" method="post" enctype="multipart/form-data">
+                <h3 class="head-form">Chỉnh Sửa Sách</h3>
+                <label class="label-form" for="">Tên Sách</label>
+                <input class="text-form" type="text" id="name" name="name"  value="<?= $result['ten_sach'] ?>">
+                <label class="label-form" for="">Số Lượng</label>
+                <input class="text-form" type="number" id="quantity" name="quantity"  value="<?= $result['so_luong'] ?>">
+                <label class="label-form" for="">Mô Tả</label>
+                <input class="text-form" type="text" id="description" name="description"  value="<?= $result['mo_ta'] ?>">
+                <label class="label-form" for="">Tác Giả</label>
+                <input class="text-form" type="text" id="author" name="author" value="<?= $result['tac_gia'] ?>">
+                <label class="label-form" for="">Ngôn Ngữ</label>
+                <input class="text-form" type="text" id="language" name="language" value="<?= $result['ngon_ngu'] ?>">
+                <label class="label-form" for="">Năm Xuất Bản</label>
+                <input class="text-form" type="text" id="year" name="year" value="<?= $result['nam_xuat_ban'] ?>">
+                <label class="label-form" for="">Vị Trí</label>
+                <input class="text-form" type="text" id="location" name="location" value="<?= $result['vi_tri'] ?>">
+                <label class="label-form" for="">Trạng Thái Sách</label>
+                <input class="text-form" type="text" id="status" name="status" value="<?= $result['trang_thai_sach'] ?>">
+                <label class="label-form" for="">Cấp Bậc</label>
+                <input class="text-form" type="text" id="rank" name="rank" value="<?= $result['ma_rank'] ?>">
+                <label class="label-form" for="">Thể Loại Sách</label>
+                <input class="text-form" type="text" id="category" name="category" value="<?= $result['ma_the_loai'] ?>">
+                <label class="label-form" for="">Nhà Xuất Bản</label>
+                <input class="text-form" type="text" id="publisher" name="publisher" value="<?= $result['ma_nxb'] ?>">
                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                 <label for="date">Ngày Nhập:</label>
                 <input type="date" id="date" name="date" value="<?= $result['ngay_nhap'] ?>" required><br><br>
                 <label for="image">Ảnh:</label>
                 <input type="file" id="image" name="image" accept="image/*" value="<?= $result['anh_bia'] ?>"><br><br>
                 <input type="hidden" name="form_submitted" value="1">
-                <input type="submit" value="Cập nhật">
+                <input class="submit-form" type="submit" value="Cập Nhật">
+            <a class="submit-form2" href="admin.php">Hủy</a>
             </form>
         <?php
         } else {
@@ -111,27 +120,39 @@ include("connection.php");
         }
     } else {
         ?>
-        <form method="post" enctype="multipart/form-data">
-            <h3>Them sach</h3>
-            <label for="">Tên Sách</label>
-            <input class="text-form" type="text" id="name" name="name" placeholder="Tên Sách" value="">
-            <input class="text-form" type="number" id="quantity" name="quantity" placeholder="Số Lượng" value="">
-            <input class="text-form" type="text" id="description" name="description" placeholder="Mô Tả" value="">
-            <input class="text-form" type="text" id="author" name="author" placeholder="Tác Giả" value="">
-            <input class="text-form" type="text" id="language" name="language" placeholder="Ngôn Ngữ" value="">
-            <input class="text-form" type="text" id="year" name="year" placeholder="Năm xuất bản" value="">
-            <input class="text-form" type="text" id="location" name="location" placeholder="Vị Trí" value="">
-            <input class="text-form" type="text" id="status" name="status" placeholder="Trạng Thái Sách" value="">
-            <input class="text-form" type="text" id="rank" name="rank" placeholder="Mã Rank" value="">
-            <input class="text-form" type="text" id="category" name="category" placeholder="Mã Thể Loại" value="">
-            <input class="text-form" type="text" id="publisher" name="publisher" placeholder="Mã Nhà Xuất Bản" value="">
-            <label for="date">Ngày Nhập:</label>
+        <form class="form-total" method="post" enctype="multipart/form-data">
+            <h3 class="head-form">Thêm Sách</h3>
+            <label class="label-form" for="">Tên Sách</label>
+            <input class="text-form" type="text" id="name" name="name" value="">
+            <label class="label-form" for="">Số Lượng</label>
+            <input class="text-form" type="number" id="quantity" name="quantity" value="">
+            <label class="label-form" for="">Mô Tả</label>
+            <input class="text-form" type="text" id="description" name="description" value="">
+            <label class="label-form" for="">Tác Giả</label>
+            <input class="text-form" type="text" id="author" name="author" value="">
+            <label class="label-form" for="">Ngôn Ngữ</label>
+            <input class="text-form" type="text" id="language" name="language" value="">
+            <label class="label-form" for="">Năm Xuất Bản</label>
+            <input class="text-form" type="text" id="year" name="year" value="">
+            <label class="label-form" for="">Vị Trí</label>
+            <input class="text-form" type="text" id="location" name="location" value="">
+            <label class="label-form" for="">Trạng Thái Sách</label>
+            <input class="text-form" type="text" id="status" name="status" value="">
+            <label class="label-form" for="">Cấp Bậc</label>
+            <input class="text-form" type="text" id="rank" name="rank" value="">
+            <label class="label-form" for="">Thể Loại Sách</label>
+            <input class="text-form" type="text" id="category" name="category" value="">
+            <label class="label-form" for="">Nhà Xuất Bản</label>
+            <input class="text-form" type="text" id="publisher" name="publisher" value="">
+            <label class="label-form" for="date">Ngày Nhập:</label>
             <input type="date" id="date" name="date" required><br><br>
-            <label for="image">Ảnh:</label>
+            <label class="label-form" for="image">Ảnh:</label>
             <input type="file" id="image" name="image" accept="image/*"><br><br>
             <input type="hidden" name="form_submitted" value="1">
-            <input type="submit" value="Thêm">
+            <input class="submit-form" type="submit" value="Thêm">
+            <a class="submit-form2" href="admin.php">Hủy</a>
         </form>
+        
     <?php
     }
     ?>

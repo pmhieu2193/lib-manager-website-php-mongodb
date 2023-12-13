@@ -16,7 +16,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     height: auto;
-    grid-row-gap: 40px;
+    grid-row-gap: 70px;
 }
 
 .titlefilter{
