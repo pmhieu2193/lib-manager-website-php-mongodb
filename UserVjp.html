@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm sản phẩm</title>
+    <link rel="stylesheet" href="css/sigup.css">
+    <link rel="stylesheet" href="css/addProduct.css">
+</head>
+<body>
+    <img src="img/loader.gif" class="loader" alt="">
+
+    <div class="alert-box">
+        <img src="img/error.png" class="alert-img" alt="">
+        <p class="alert-msg">Lỗi</p>
+    </div>
+
+    <img src="img/dark-logo.png" class="logo" alt="">
+
+    <div class="form">
+        <a>Id user<a><a>1234</a><br><br>
+        <p>Tạo lúc: 2306</p>
+        <p>Check in gần nhất: 2306</p> <br><br>
+        <h3>Thông tin cá nhân</h3><br><br>
+
+        <a>Email</a><input type="text" id="product-name" placeholder="Email" value="aliv">
+        <a>Tên</a><input type="text" id="product-name" placeholder="Tên">
+        <a>CCCD</a><input type="text" id="product-name" placeholder="CCCD">
+        <a>Số điện thoại</a><input type="number" id="product-name" placeholder="Số điện thoại">
+        <a>Địa chỉ<textarea id="tags" placeholder="Địa chỉ"></textarea>
+        <a>Mật khẩu</a><input type="text" id="product-name" placeholder="Mật khẩu/ chỉ được xem không, được đổi nhé, br">
+            
+        <br><br><h3>Thông tin tài khoản</h3><br><br>
+        <br><label for="status">Trạng thái tài khoản: </label>
+        <select name="status" id="status">
+            <option value="0">Chờ xác nhận (Khách vãng lai)</option>
+            <option value="1">Đã xác nhận</option>
+            <option value="2">Khoá tài khoản</option>
+        </select>
+        <br><br><br><a>Địa chỉ<textarea id="tags" placeholder="Địa chỉ"></textarea>
+        <label>
+            <br><br>
+            <a> Giới tính: </a>
+            <input type="checkbox" name="gender" value="1" onchange="uncheckOther(this)" class="checkbox" ><a> Nam</a>
+            <input type="checkbox" name="gender" value="0" onchange="uncheckOther(this)" class="checkbox" ><a> Nữ</a>
+        </label>
+        <br>
+        <a>Ngày sinh</a><br><br><input type="date" autocomplete="off" name="date" placeholder="Ngày sinh">
+        <br>
+        <br><label for="rank">Cấp bậc: </label>
+        <select name="rank" id="rank">
+            <option value="1">Sinh viên</option>
+            <option value="2">Học sinh</option>
+            <option value="3">Công chức</option>
+            <option value="4">Khách vãng lai</option>
+        </select>
+        <br><br>
+        
+    </div>
+    <input type="checkbox" class="checkbox" id="tac" checked>
+    <label for="tac">Tôi đã kiểm tra kĩ thông tin</label>
+
+    <div class="buttons">
+        <button class="btn" id="add-btn">Lưu chỉnh sửa</button>
+        <button class="btn" id="add-btn" style="background-color: red;">Xoá tài khoản</button>
+        <button class="btn" id="save-btn">Huỷ</button>
+    </div>
+    <script src="js/addProduct.js"></script>
+    
+</body>
+</html>

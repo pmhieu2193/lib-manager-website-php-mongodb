@@ -1,1 +1,1 @@
-# Lib Manager website
+# My first project frontend e-commerce website

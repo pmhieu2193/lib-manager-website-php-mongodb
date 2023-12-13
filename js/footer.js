@@ -26,7 +26,6 @@ const createFooter = () => {
     </div>
 </div>
 <p class="footer-title">Thông tin của chúng tôi</p>
-<p class="info" style="color:white;">Đồ án website bán hàng môn "Lập trình web và ứng dụng" -  Chủ đề: Website bán áo giáp và vũ khí chiến tranh. <br> Đây là sản phẩm của nhóm 3, lớp CLC C4, trường Đại học Sài Gòn. Chúng tôi gồm 4 thành viên, lần lượt là: Hiếu, Quang, Hậu và Đạt. Website này cấu tạo thuần bằng css và js cơ bản, có tham khảo từ nhiều nguồn. Xin cảm ơn.</p>
 <p class="info">email liên hệ: - lightningemperor2193@gmail.com</p>
 <p class="info">số điện thoại: - 0386393932</p>
 <div class="footer-social-container">
