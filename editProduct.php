@@ -86,6 +86,7 @@ include("connection.php");
         if ($result) {
     ?>
             <form method="post" enctype="multipart/form-data">
+                <h3>Chinh sua sach</h3>
                 <input class="text-form" type="text" id="name" name="name" placeholder="Tên Sách" value="<?= $result['ten_sach'] ?>">
                 <input class="text-form" type="number" id="quantity" name="quantity" placeholder="Số Lượng" value="<?= $result['so_luong'] ?>">
                 <input class="text-form" type="text" id="author" name="author" placeholder="Tác Giả" value="<?= $result['tac_gia'] ?>">
@@ -111,6 +112,8 @@ include("connection.php");
     } else {
         ?>
         <form method="post" enctype="multipart/form-data">
+            <h3>Them sach</h3>
+            <label for="">Tên Sách</label>
             <input class="text-form" type="text" id="name" name="name" placeholder="Tên Sách" value="">
             <input class="text-form" type="number" id="quantity" name="quantity" placeholder="Số Lượng" value="">
             <input class="text-form" type="text" id="description" name="description" placeholder="Mô Tả" value="">

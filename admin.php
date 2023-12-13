@@ -48,8 +48,7 @@ include("connection.php");
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             $product_id = $_POST['product_id'];
             $status = (int)$_POST['status'];
-
-            // Thực hiện cập nhật trạng thái sách trong collection
+            
             $result = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => ['trang_thai_sach' => $status]]);
 
             if ($result->getModifiedCount() > 0) {
