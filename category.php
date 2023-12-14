@@ -44,8 +44,8 @@ include("connection.php");
     <!--products list-->
     <div class="product-listing">
         <div class="add-product">
-            <p class="add-product-title">Quản lý Nhà Xuất Bản</p>
-            <a href="editPublisher.php"><button class="btn btn-new-product" id="new-user">&#43;Thêm Nhà Xuất Bản</button></a>
+            <p class="add-product-title">Quản lý Thể Loại Sách</p>
+            <a href="editCategory.php"><button class="btn btn-new-product" id="new-user">&#43;Thêm Thể Loại</button></a>
         </div>
         <div class="box">
             <div class="search">
@@ -56,21 +56,19 @@ include("connection.php");
         <div class="small-container oder-page">
             <table>
                 <tr>
-                    <th>Tên Nhà Xuất Bản</th>
-                    <th>Địa Chỉ Nhà Xuất Bản</th>
-                    <th>Số Điện Thoại</th>
+                    <th>Mã Thể Loại</th>
+                    <th>Thể Loại Sách</th>
                     <th class="table-btn-zone">Hành động</th>
                 </tr>
                 <?php
-                $collection = $database->selectCollection('nha_xuat_ban');
+                $collection = $database->selectCollection('the_loai');
                 $result = $collection->find([]);
 
                 foreach ($result as $document) {
                     echo '<tr>';
-                    echo '<td><a>' . $document->ten_nxb . '</a></td>';
-                    echo '<td><a>' . $document->dia_chi_nxb . '</a></td>';
-                    echo '<td><p style="color: red">' . $document->sdt_nxb . '</p></td>';
-                    echo '<td><a href="editPublisher.php?id=' . $document->_id . '" class="confirm-btn">chỉnh sửa</a>';
+                    echo '<td><a>' . $document->ma_the_loai . '</a></td>';
+                    echo '<td><a>' . $document->ten_the_loai . '</a></td>';
+                    echo '<td><a href="editCategory.php?id=' . $document->_id . '" class="confirm-btn">chỉnh sửa</a>';
                 ?>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?= $document->_id ?>">
@@ -85,11 +83,11 @@ include("connection.php");
                     $result = $collection->deleteOne(['_id' => new MongoDB\BSON\ObjectID($delete_id)]);
 
                     if ($result->getDeletedCount() > 0) {
-                        echo 'Xóa nhà xuất bản thành công!';
+                        echo 'Xóa thể loại';
                     } else {
-                        echo 'Xóa nhà xuất bản thất bại';
+                        echo 'error';
                     }
-                    header("Location: publisher.php");
+                    header("Location: category.php");
                     exit;
                 }
                 ?>

@@ -24,44 +24,36 @@ include("connection.php");
     <img src="img/dark-logo.png" class="logo" alt="">
 
     <?php
-    $collection = $database->selectCollection("nha_xuat_ban");
+    $collection = $database->selectCollection("the_loai");
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['form_submitted'])) {
-        $ten_nxb = $_POST['name'];
-        $dia_chi_nxb = $_POST['address'];
-        $sdt_nxb = $_POST['phone'];
+        $ma_the_loai = (int)$_POST['idcate'];
+        $ten_the_loai = $_POST['name'];
 
         $data = [
-            'ten_nxb' => $ten_nxb,
-            'dia_chi_nxb' => $dia_chi_nxb,
-            'sdt_nxb' => $sdt_nxb,
+            'ma_the_loai' => $ma_the_loai,
+            'ten_the_loai' => $ten_the_loai,
         ];
 
         $product_id = isset($_POST['product_id']) ? $_POST['product_id'] : null;
 
         if (empty($product_id)) {
-            //tự động tăng
-            $lastPublisher = $collection->findOne([], ['sort' => ['ma_nxb' => -1]]);
-            $lastMaNXB = $lastPublisher ? $lastPublisher['ma_nxb'] : 0;
-            $maNXB = $lastMaNXB + 1;
-            $data['ma_nxb'] = $maNXB;
             $result = $collection->insertOne($data);
             if ($result->getInsertedCount() > 0) {
-                echo 'Thêm nhà xuất bản thành công!';
+                echo 'Success';
             } else {
-                echo 'Thêm nhà xuất bản thất bại';
+                echo 'Error';
             }
         } else {
             $result = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => $data]);
 
             if ($result->getModifiedCount() > 0) {
-                echo 'Cập nhật nhà xuất bản thành công!';
+                echo 'Success';
             } else {
-                echo 'Không có sự thay đổi.';
+                echo 'Error';
             }
         }
-        // Điều hướng sau khi xử lý form
-        header("Location: publisher.php");
+        header("Location: category.php");
         exit;
     }
 
@@ -71,13 +63,11 @@ include("connection.php");
         if ($result) {
     ?>
             <form method="post" enctype="multipart/form-data">
-                <h3 class="head-form">Chỉnh sửa Nhà Xuất Bản</h3>
-                <label class="label-form" for="">Tên Nhà Xuất bản</label>
-                <input class="text-form" type="text" id="name" name="name" placeholder="Tên Nhà Xuất Bản" value="<?= $result['ten_nxb'] ?>">
-                <label class="label-form" for="">Địa Chỉ Nhà Xuất Bản</label>
-                <input class="text-form" type="text" id="address" name="address" placeholder="Địa Chỉ Nhà Xuất Bản" value="<?= $result['dia_chi_nxb'] ?>">
-                <label class="label-form" for="">Số Điện Thoại</label>
-                <input class="text-form" type="number" id="phone" name="phone" placeholder="Số Điện Thoại" value="<?= $result['sdt_nxb'] ?>">
+                <h3 class="head-form">Chỉnh sửa Thể Loại Sách</h3>
+                <label class="label-form" for="">Mã Thể Loại</label>
+                <input class="text-form" type="text" id="idcate" name="idcate" value="<?= $result['ma_the_loai'] ?>">
+                <label class="label-form" for="">Tên Thể Loại</label>
+                <input class="text-form" type="text" id="name" name="name" value="<?= $result['ten_the_loai'] ?>">
                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                 <input type="hidden" name="form_submitted" value="1">
                 <input class="submit-form" type="submit" value="Cập Nhật">
@@ -90,13 +80,11 @@ include("connection.php");
     } else {
         ?>
         <form method="post" enctype="multipart/form-data">
-            <h3 class="head-form">Thêm Nhà Xuất Bản</h3>
-            <label class="label-form" for="">Tên Nhà Xuất bản</label>
+            <h3 class="head-form">Thêm Thể Loại Sách</h3>
+            <label class="label-form" for="">Mã Thể Loại</label>
+            <input class="text-form" type="text" id="idcate" name="idcate" value="">
+            <label class="label-form" for="">Tên Thể Loại</label>
             <input class="text-form" type="text" id="name" name="name" value="">
-            <label class="label-form" for="">Địa Chỉ Nhà Xuất bản</label>
-            <input class="text-form" type="text" id="address" name="address" value="">
-            <label class="label-form" for="">Số Điện Thoại</label>
-            <input class="text-form" type="number" id="phone" name="phone" value="">
             <input type="hidden" name="form_submitted" value="1">
             <input class="submit-form" type="submit" value="Thêm">
             <a class="submit-form2" href="admin.php">Hủy</a>

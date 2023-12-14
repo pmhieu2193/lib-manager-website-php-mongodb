@@ -58,12 +58,15 @@ include("connection.php");
 
             exit;
         }
+
         $result = $collection->find([]);
         echo '<div class="product-container2">';
         foreach ($result as $document) {
             echo '<div class="product-card2">';
-            echo '<div class="product-image">';
-            echo '<span class="tag"></span>';
+            echo '<div class="product-image">'; 
+            $status_text = ($document->trang_thai_sach == 0) ? 'Ẩn' : 'Hiển Thị';
+            echo '<span class="tag">' . $status_text . '</span>';
+
             echo '<img src="' . $document->anh_bia . '" class="product-thumb" alt="">';
             echo '<button class="amount-product">Số Lượng: ' . $document->so_luong . '</button>';
             echo '<a href="editProduct.php?id=' . $document['_id'] . '" class="card-action-btn edit-btn"><img class="img-edit" src="img/edit.png" alt=""></a>';
@@ -79,6 +82,7 @@ include("connection.php");
         }
         echo '</div>';
         ?>
+
     </div>
     <div id="overlay" class="overlay">
         <div id="popup" class="popup">
