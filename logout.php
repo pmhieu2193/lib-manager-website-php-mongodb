@@ -6,6 +6,6 @@ session_unset();
 
 // Huỷ toàn bộ session
 session_destroy();
-header("location: index.php");
+header("location: login.php");
 exit();
 ?>

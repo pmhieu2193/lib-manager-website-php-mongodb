@@ -25,9 +25,11 @@
                         }
                         ?><?php echo '</p>
                     </div>
-                </a>
-                <form action="cartlog.php" type="post"><a><input type="image" name="gotoCart" src="img/history.png"></a></form>
-                <form action="cartlog.php" type="post"><a><input type="image" name="gotoCart" src="img/cart.png"></a></form>
+                </a>';
+                if(isset($_SESSION["email"])){
+                    echo '<a href="my_order.php"><input type="image" name="gotoCart" src="img/history.png"></a>';
+                }
+                echo '<form action="cartlog.php" type="post"><a><input type="image" name="gotoCart" src="img/cart.png"></a></form>
         </div>
     </div>
     

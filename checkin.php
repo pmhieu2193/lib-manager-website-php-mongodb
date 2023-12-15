@@ -106,7 +106,7 @@
                                                 <h1>Danh sách sách trễ hạn trả</h1>
                                                 <table>
                                                     <tr>
-                                                        <th>Sản phẩm</th>
+                                                        <th>Sách</th>
                                                         <th class="number-pro">Tình trạng</th>
                                                         <th class="cost">Hạn trả</th>
                                                         <th class="cost">Gia hạn</th>

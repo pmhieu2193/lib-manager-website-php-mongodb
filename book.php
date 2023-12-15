@@ -28,9 +28,7 @@
                     $manxb=$book->ma_nxb;
                     $tennxb= $collection3->findOne(['ma_nxb'=> $manxb]);
                     
-                    echo '<form action="xu_ly_sach.php" type="post">';
                     echo '<section class="product-details">';
-                    echo '<input name="id_book" type="hidden" value="'.$book->_id.'">';
                     echo '<img src='.$book->anh_bia.' class="image-slider">';
                     echo '<div><h2 class="product-brand">'.$book->ten_sach.'</h2>';
                     echo '<p class="product-short-des">'.$book->mo_ta.'</p>';
@@ -47,8 +45,9 @@
                         if(isset ($_SESSION['ma_rank'])){
                             $ma_rank=$_SESSION['ma_rank'];
                             if($ma_rank!=-1&&isset($_SESSION['_id'])){
-                                echo '<div><button type="submit" name="addToCart" class="btn cart-btn">Thêm vào giỏ sách</button>';
-                                echo '<button type="submit" name="addToWishList" class="btn cart-btn">Danh sách yêu thích &#x2764;</button></div>';
+                                echo '<form action="xu_ly_sach.php" type="post">';
+                                echo '<div><input name="id_book" type="hidden" value="'.$book->_id.'"><button type="submit" name="addToCart" class="btn cart-btn">Thêm vào giỏ sách</button></form>';
+                                echo '<form action="xyz.php" type="post"><input name="id_book" type="hidden" value="'.$book->_id.'"><button type="submit" name="addToWishList" class="btn cart-btn">Danh sách yêu thích &#x2764;</button></form></div>';
                             }
                             else{
                                 echo 'Bạn chưa thể mượn sách này, hãy kích hoạt tài khoản trước';
@@ -165,7 +164,7 @@
                 <div class="product-image">
                     <span class="discount-tag">đang giảm 15%</span>
                     <img src="img/card8.png" class="product-thumb" alt="">
-                    <button class="card-btn">thêm vào giỏ hàng</button>
+                    <button class="card-btn">thêm vào giỏ sách</button>
                 </div>
                 <div class="product-info">
                     <h2 class="product-brand">Rift Stalkers Primaris</h2>

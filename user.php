@@ -14,10 +14,6 @@
 
 </head>
 <body>
-    <?php   
-            include("navadmin.php");
-            include("connection.php");
-    ?>
     <img src="img/loader.gif" class="loader" alt="">
 
     <div class="alert-box">
@@ -25,21 +21,10 @@
         <p class="alert-msg">Thông báo lỗi</p>
     </div>
     <img src="img/dark-logo.png" class="logo" alt="">
-
-    <!--become seller element-->
-    <!--apply form-->
-    <div class="nav-space">
-        <div class="nav-admin">
-            <img src="img/user.png">
-            <p class="add-product-title name-admin">Chào mừng Hiếu</p>
-            <button class="btn btn-new-product" id="new-product" onclick="location.href='login.html'">Đăng xuất</button>
-        </div>
-        <p class="add-product-title nav-link" onclick="location.href='admin.html'">quản lý sản phẩm</p>
-        <p class="add-product-title nav-link" onclick="location.href='user.php'">quản lý user</p>
-        <p class="add-product-title nav-link" onclick="location.href='order.html'">quản lý đơn hàng</p>
-        <p class="add-product-title nav-link" onclick="location.href='report.html'">báo cáo</p>
-        <p class="add-product-title nav-link" onclick="location.href='orderdetail.html'">xem đơn chi tiết</p>
-    </div>
+    <?php   
+            include("navadmin.php");
+            include("connection.php");
+    ?>
     <!--products list-->
     <div class="product-listing">
         <div class="add-product">
@@ -67,6 +52,8 @@
             </div>
         </div>
         <div class="small-container oder-page">
+        <?php if (isset($_GET['error'])) { 
+            echo '<h3>'.$_GET['error'].'</h3>'; }?>
             <table>
                 <tr>
                     <th>Email</th>
@@ -79,28 +66,43 @@
                 <?php
                 //những cái sort, tìm kiếm sẽ xử lý collection này
                 $collection = $database -> selectCollection("user") ;
-                $user = $collection -> find(["trang_thai_tai_khoan" => 1]) ;
+                $user = $collection -> find() ;
+                //$user = $collection -> find(["trang_thai_tai_khoan" => 1]) ;
                 foreach ($user as $document) {
                     //mã yêu cầu mượn
                     //$id= (string)$document->_id;
                     echo '<tr>
                     <td><a>'.$document->email.'</a>
-                    <td><a>'.$document->ten.'</a>
-                    <td><p style="color: green">';
+                    <td><a>'.$document->ten.'</a>';
                     if($document->trang_thai_tai_khoan==0){
-                        echo 'Chưa được duyệt</p></td>';
+                        echo '<td><p style="color: red">Chưa được duyệt</p></td>';
                     }
                     if($document->trang_thai_tai_khoan==1){
-                        echo 'Đã được duyệt</p></td>';
+                        echo '<td><p style="color: green">Đã được duyệt</p></td>';
                     }
+                    if($document->trang_thai_tai_khoan==2){
+                        echo '<td><p style="color: red">Tài khoản đã bị khoá</p></td>';
+                    }
+                    if($document->trang_thai_tai_khoan==-1){
+                        echo '<td><p style="color: red">Đã từ chối</p></td>';
+                    }
+                    
                     $collection2 = $database -> selectCollection("rank") ;
                     $rank = $collection2 -> findOne(["ma_rank" => $document->ma_rank]);
-                    echo '<td><p style="color: red">'.$rank->ten_rank.'</p></td>';
+                    if($document->ma_rank==0){
+                        echo '<td><p style="color: red">'.$rank->ten_rank.'</p></td>';
+                    }
+                    else{
+                        echo '<td><p style="color: blue">'.$rank->ten_rank.'</p></td>';
+                    }
                     $date1 = $document->tao_luc;
                     $date = new DateTime($date1->toDateTime()->format('Y-m-d H:i:s'));
                     $id = (string)  $document->_id;
-                    echo '<td>'.$date->format('d-m-Y').'</td>
-                    <td><button class="confirm-btn">Duyệt</button><button class="canceled-btn">Từ chối</button><form action="userDetail.php" type="post"><input type="hidden" name="id" value="'.$id.'"><button type="submit" name="getUser" class="confirm-btn" style="background-color: green;">Chi tiết</button></form></td>
+                    echo '<td>'.$date->format('d-m-Y').'</td><td>';
+                    if($document->trang_thai_tai_khoan==0){
+                        echo '<form action="action_user.php" type="post"><input type="hidden" name="id" value="'.$id.'"><button type="submit" name="user_action" value="accept" class="confirm-btn">Duyệt</button><button type="submit" name="user_action" value="cancel" class="cancel-btn">Từ chối</button></form>';
+                    }
+                    echo '<form action="userDetail.php" type="post"><input type="hidden" name="id" value="'.$id.'"><button type="submit" name="getUser" class="confirm-btn" style="background-color: green;">Chi tiết</button></form></td>
                 </tr>';
                 }
                 

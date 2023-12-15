@@ -10,9 +10,8 @@ if(!isset($_POST["tao_YCM"])) {
 
     $timeZone = new DateTimeZone('Asia/Ho_Chi_Minh');
     $currentDateTime = new DateTime('now', $timeZone);
-    $TimeReturn = $currentDateTime -> modify('+7 days');
+
     $mongoDate = new MongoDB\BSON\UTCDateTime($currentDateTime->getTimestamp() * 1000);
-    $mongoDateReturn = new MongoDB\BSON\UTCDateTime($TimeReturn->getTimestamp() * 1000);
     $timestamp = $currentDateTime->getTimestamp();
     $timeString = $currentDateTime->format('H:i:s');
     echo "Thời gian hiện tại: " . $timeString . "<br>";
@@ -22,8 +21,12 @@ if(!isset($_POST["tao_YCM"])) {
         'ngay_yeu_cau' => $mongoDate,
         'gio_yeu_cau' => $timestamp,
         'trang_thai_yeu_cau' => 0,
-        'ma_user' => $id_user
+        'ma_user' => $id_user,
+        'ma_nguoi_duyet' => ''
     ];
+    $TimeReturn = $currentDateTime -> modify('+7 days');
+    $mongoDateReturn = new MongoDB\BSON\UTCDateTime($TimeReturn->getTimestamp() * 1000);
+
     $collection = $database->selectCollection('yeu_cau_muon');
     $insertResult = $collection->insertOne($newDocument);
 

@@ -5,13 +5,10 @@ echo'
     <div class="nav-admin">
         <img src="img/user.png">
         <p class="add-product-title name-admin">'.$_SESSION['ten'].'</p>
-        <button class="btn btn-new-product" id="new-product" onclick="location.href="';
-    echo "'login.php'";
-    echo '">Đăng xuất</button></div>';
-
+        <form action="logout.php" type="post"><button type="submit" name="logout" class="btn btn-new-product" id="new-product">Đăng xuất</button></form></div>';
     echo '<p class="add-product-title nav-link" onclick="location.href=';
     echo "'checkin.php'";
-    echo '">Quản lý vào</p>';
+    echo '">Check in</p>';
     echo '<p class="add-product-title nav-link" onclick="location.href=';
     echo "'checkin.php'";
     echo '">Quản lý sách</p>';
@@ -24,9 +21,6 @@ echo'
     echo '<p class="add-product-title nav-link" onclick="location.href=';
     echo "'order.php'";
     echo '">Yêu cầu trả</p>';
-    echo '<p class="add-product-title nav-link" onclick="location.href=';
-    echo "'orderdetail.php'";
-    echo '">xem đơn chi tiết</p>';
     echo '<p class="add-product-title nav-link" onclick="location.href=';
     echo "'report.php'";
     echo '">báo cáo</p>';
