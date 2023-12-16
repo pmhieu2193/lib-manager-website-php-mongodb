@@ -24,6 +24,41 @@
     <?php   
             include("navadmin.php");
             include("connection.php");
+            $collection = $database -> selectCollection("user");
+            if(isset($_GET["value_search"])){
+                $search = $_REQUEST ["value_search"];
+                $num = (int)$_REQUEST ["num"];
+                $role = (int)$_REQUEST["role"];
+                $status= (int)$_REQUEST["status"];
+                $regex = new MongoDB\BSON\Regex($search);
+                if(($role=='')||($status=='')){
+                    if($role==''){
+                        $filter = ['ten' => $regex, 'trang_thai_tai_khoan' => $status];
+                    }
+                    if(($status=='')){
+                        $filter = ['ten' => $regex, 'ma_rank' => $role];
+                    }
+                    if(($role=='')||($status=='')){
+                        $filter = ['ten' => $regex];
+                    }
+                }
+                else{
+                    $filter = ['ten' => $regex, 'ma_rank' => $role, 'trang_thai_tai_khoan' => $status];
+                }
+                if($num==''){
+                    $options = [ 'sort' => ['tao_luc' => -1]];
+                }
+                else{
+                    $options = ['limit' => $num,
+                    'sort' => ['tao_luc' => -1]];
+                }
+
+                $user = $collection->find($filter, $options);
+                $role="";
+            }
+            else{
+                $user = $collection -> find() ;
+            }
     ?>
     <!--products list-->
     <div class="product-listing">
@@ -31,25 +66,38 @@
             <p class="add-product-title">quản lý user</p>
             <button class="btn btn-new-product" id="new-user" onclick="location.href='sigup.php'">	&#43; thêm user</button>
         </div>
-        <div class="box">
-            <select class="select">
-                <option>hiển thị: 10 user</option>
-                <option>hiển thị: 20 user</option>
-                <option>hiển thị: 30 user</option>
-                <option>hiển thị tất cả</option>
+            <form id="ok" action = "user.php" type="get">
+            <div class="box">
+            <select name="num" class="select" onchange="submitForm()">
+                <option value=10 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 10 user</option>
+                <option value=20 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 20 user</option>
+                <option value=30 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 30 user</option>
+                <option value='' <?php if(isset($_GET["num"])&&(int)$_GET["num"]=='') echo ' selected';?>>hiển thị tất cả</option>
             </select>
-            <select class="select">
-                <option>Phân loại: Tất cả user</option>
-                <option>Staff</option>
-                <option>Administrator</option>
-                <option>Encoder</option>
-                <option>Uploader</option>
-                <option>Mới thêm gần đây</option>
+            <select name="status" class="select" onchange="submitForm()">
+                <option value="" <?php if(isset($_GET["status"])&&(int)$_GET["status"]=='') echo ' selected';?>>Tất cả trạng thái</option>
+                <option value=0 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==0) echo ' selected';?>>Chưa được duyệt</option>
+                <option value=1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==1) echo ' selected';?>>Đã duyệt</option>
+                <option value=-1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==-1) echo ' selected';?>>Đã từ chối</option>
+                <option value=2 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==2) echo ' selected';?>>Đã khoá</option>
             </select>
-            <div class="search">
-                <input type="text" placeholder="Tìm kiếm bằng email...">
-                <button class="search-btn">&#9906; Tìm kiếm</button>                       
+            <select name="role" class="select" onchange="submitForm()">
+                <option value="" <?php if(isset($_GET["role"])&&(int)$_GET["role"]=='') echo ' selected';?>>Phân loại: Tất cả user</option>
+                <?php $collectionselect = $database -> selectCollection("rank");
+                $rankselect = $collectionselect -> find();
+                foreach($rankselect as $rank){
+                    echo '<option value='.$rank->ma_rank;
+                    if(isset($_GET["role"])){ if((int)$_GET["role"]==(int)$rank->ma_rank&&$_GET["role"]!=0) echo ' selected';}
+                    echo '>'.$rank->ten_rank.'</option>';
+                }
+                ?>
+            </select>
+        </div>
+            <div class="search" style="margin-left: 67%">
+                <input type="text" name= "value_search" placeholder="Tìm kiếm bằng email...">
+                <button type= "submit" class="search-btn">&#9906; Tìm kiếm</button>                       
             </div>
+            </form>
         </div>
         <div class="small-container oder-page">
         <?php if (isset($_GET['error'])) { 
@@ -65,8 +113,6 @@
                 </tr>
                 <?php
                 //những cái sort, tìm kiếm sẽ xử lý collection này
-                $collection = $database -> selectCollection("user") ;
-                $user = $collection -> find() ;
                 //$user = $collection -> find(["trang_thai_tai_khoan" => 1]) ;
                 foreach ($user as $document) {
                     //mã yêu cầu mượn
@@ -108,14 +154,6 @@
                 
                 ?>
         </table>
-        </div>
-        <div class="box">
-            <a>Đang hiển thị trang 1 trên 999</a>
-            <div class="pre-next-btn">
-                <a class="btn">Trang trước</a>
-                <a class="btn">1</a>
-                <a class="btn">Trang sau</a>
-            </div>
         </div>
     </div>
 
