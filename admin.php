@@ -30,20 +30,22 @@ include("connection.php");
     ?>
     <div class="box">
         <form class="form-search" action="admin.php" method="GET">
-            <?php
-            $collectionSach = $database->selectCollection('sach');
-            $sachCursor = $collectionSach->find();
-            foreach ($sachCursor as $sach) {
-                $maTheLoai = $sach['ma_the_loai'];
-                $collectionTheLoai = $database->selectCollection('the_loai');
-                $theLoai = $collectionTheLoai->findOne(['ma_the_loai' => $maTheLoai]);
+            <label for="ma_the_loai">Chọn thể loại:</label>
+            <select name="ma_the_loai" id="ma_the_loai">
+                <option value="">Tất cả</option>
+                <?php
+                $collectionSach = $database->selectCollection('sach');
+                $sachCursor = $collectionSach->find();
+                foreach ($sachCursor as $sach) {
+                    $maTheLoai = $sach['ma_the_loai'];
+                    $collectionTheLoai = $database->selectCollection('the_loai');
+                    $theLoai = $collectionTheLoai->findOne(['ma_the_loai' => $maTheLoai]);
 
-                echo '<label>';
-                echo '<input type="checkbox" name="ma_the_loai[]" value="' . $maTheLoai . '"> ' . $theLoai['ten_the_loai'];
-                echo '</label>';
-            }
-            ?>
-            <input type="submit" value="Tìm kiếm" class="search-btn">
+                    echo '<option value="' . $maTheLoai . '">' . $theLoai['ten_the_loai'] . '</option>';
+                }
+                ?>
+            </select>
+            <input type="submit" value="Lọc" class="search-btn">
         </form>
         <div class="search">
             <form class="form-search" action="admin.php" method="GET" accept-charset="UTF-8">
@@ -74,21 +76,46 @@ include("connection.php");
             exit;
         }
         $searchTerm = '';
-        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['timkiem'])) {
-            $timKiem = $_GET['timkiem'];
-            $searchTerm = $timKiem;
-            if (!empty($timKiem)) {
-                $escapedTerm = preg_quote($timKiem, '/');
-                $regexPattern = new \MongoDB\BSON\Regex($escapedTerm, 'i');
-                $result = $collection->find(['ten_sach' => ['$regex' => $regexPattern->getPattern(), '$options' => $regexPattern->getFlags()]]);
-            } else {
-                echo 'Vui lòng nhập từ khóa tìm kiếm.';
-                $result = $collection->find([]);
+        $theloaiText = '';
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            //filter
+            $filter = [];
+            if (isset($_GET['ma_the_loai']) && !empty($_GET['ma_the_loai'])) {
+                $maTheLoai = (int)$_GET['ma_the_loai'];
+                if (is_int($maTheLoai)) {
+                    $filter['ma_the_loai'] = $maTheLoai;
+                    $collectionTheLoai = $database->selectCollection('the_loai');
+                    $theLoaiInfo = $collectionTheLoai->findOne(['ma_the_loai' => $maTheLoai]);
+
+                    if ($theLoaiInfo) {
+                        $theloaiText = 'Thể loại: ' . htmlspecialchars($theLoaiInfo['ten_the_loai']);
+                    }
+                } else {
+                    echo 'Giá trị ma_the_loai không hợp lệ.';
+                    exit;
+                }
             }
+            //search
+            if (isset($_GET['timkiem'])) {
+                $timKiem = $_GET['timkiem'];
+                $searchTerm = $timKiem;
+                if (!empty($timKiem)) {
+                    $escapedTerm = preg_quote($timKiem, '/');
+                    $regexPattern = new \MongoDB\BSON\Regex($escapedTerm, 'i');
+                    $filter['ten_sach'] = ['$regex' => $regexPattern->getPattern(), '$options' => $regexPattern->getFlags()];
+                } else {
+                    echo 'Vui lòng nhập từ khóa tìm kiếm.';
+                    $result = $collection->find([]);
+                }
+            }
+            $result = $collection->find($filter);
         } else {
             $result = $collection->find([]);
         }
 
+        if (!empty($theloaiText)) {
+            echo '<p class="theloai-info">' . $theloaiText . '</p>';
+        }
         if (!empty($searchTerm)) {
             echo '<p class="search-tearm">Kết quả tìm kiếm: ' . htmlspecialchars($searchTerm) . '</p>';
         }
