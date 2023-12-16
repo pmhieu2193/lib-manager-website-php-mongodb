@@ -62,7 +62,6 @@
                     ]
                 ]
             ];
-            
             $result = $collectionSach->aggregate($aggregateQuery);
             
             foreach ($result as $document) {

@@ -29,6 +29,22 @@ include("connection.php");
     include("navadmin.php");
     ?>
     <div class="box">
+        <form class="form-search" action="admin.php" method="GET">
+            <?php
+            $collectionSach = $database->selectCollection('sach');
+            $sachCursor = $collectionSach->find();
+            foreach ($sachCursor as $sach) {
+                $maTheLoai = $sach['ma_the_loai'];
+                $collectionTheLoai = $database->selectCollection('the_loai');
+                $theLoai = $collectionTheLoai->findOne(['ma_the_loai' => $maTheLoai]);
+
+                echo '<label>';
+                echo '<input type="checkbox" name="ma_the_loai[]" value="' . $maTheLoai . '"> ' . $theLoai['ten_the_loai'];
+                echo '</label>';
+            }
+            ?>
+            <input type="submit" value="Tìm kiếm" class="search-btn">
+        </form>
         <div class="search">
             <form class="form-search" action="admin.php" method="GET" accept-charset="UTF-8">
                 <input class="search-input" type="text" name="timkiem" placeholder="Tìm sách">
@@ -49,9 +65,7 @@ include("connection.php");
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
             $product_id = $_POST['product_id'];
             $status = (int)$_POST['status'];
-
             $result = $collection->updateOne(['_id' => new MongoDB\BSON\ObjectID($product_id)], ['$set' => ['trang_thai_sach' => $status]]);
-
             if ($result->getModifiedCount() > 0) {
                 echo 'Cập nhật trạng thái sách thành công!';
             } else {
@@ -74,11 +88,15 @@ include("connection.php");
         } else {
             $result = $collection->find([]);
         }
+
         if (!empty($searchTerm)) {
             echo '<p class="search-tearm">Kết quả tìm kiếm: ' . htmlspecialchars($searchTerm) . '</p>';
         }
         echo '<div class="product-container2">';
         foreach ($result as $document) {
+            $collection3 = $database->selectCollection('nha_xuat_ban');
+            $manxb = $document->ma_nxb;
+            $tennxb = $collection3->findOne(['ma_nxb' => $manxb]);
             echo '<div class="product-card2">';
             echo '<div class="product-image">';
             $status_text = ($document->trang_thai_sach == 0) ? 'Ẩn' : 'Hiển Thị';
@@ -93,13 +111,13 @@ include("connection.php");
             echo '<h2 class="book-brand">' . $document->ten_sach . '</h2>';
             echo '<p class="product-short-des2">Tác giả: ' . $document->tac_gia . '</p>';
             echo '<p class="product-short-des2">Ngôn ngữ: ' . $document->ngon_ngu . '</p>';
-            echo '<p class="product-short-des2">Nhà Xuất Bản: ' . $document->ma_nxb . '</p>';
+            echo '<p class="product-short-des2">Nhà Xuất Bản: ' . $tennxb->ten_nxb . '</p>';
             echo '</div>';
             echo '</div>';
         }
         echo '</div>';
         ?>
-        
+
 
 
     </div>
