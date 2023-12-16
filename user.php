@@ -27,28 +27,35 @@
             $collection = $database -> selectCollection("user");
             if(isset($_GET["value_search"])){
                 $search = $_REQUEST ["value_search"];
-                $num = (int)$_REQUEST ["num"];
-                $role = (int)$_REQUEST["role"];
-                $status= (int)$_REQUEST["status"];
+                $num = $_REQUEST ["num"];
+                $role = $_REQUEST["role"];
+                $status= $_REQUEST["status"];
                 $regex = new MongoDB\BSON\Regex($search);
-                if(($role=='')||($status=='')){
-                    if($role==''){
+                //echo 'role'.$role.'--'.'status'.$status;
+                if (!is_numeric($role)||!is_numeric($status)){
+                    if(!is_numeric($role)&&(is_numeric($status))){
+                        $status=(int)$status;
                         $filter = ['ten' => $regex, 'trang_thai_tai_khoan' => $status];
                     }
-                    if(($status=='')){
+                    if(is_numeric($role)&&(!is_numeric($status))){
+                        $role=(int)$role;
                         $filter = ['ten' => $regex, 'ma_rank' => $role];
                     }
-                    if(($role=='')||($status=='')){
+                    if(!is_numeric($status)&&(!is_numeric($status))){
                         $filter = ['ten' => $regex];
                     }
                 }
                 else{
+                    $status=(int)$status;
+                    $role=(int)$role;
                     $filter = ['ten' => $regex, 'ma_rank' => $role, 'trang_thai_tai_khoan' => $status];
+                    echo 4;
                 }
-                if($num==''){
+                if(!is_numeric($num)){
                     $options = [ 'sort' => ['tao_luc' => -1]];
                 }
                 else{
+                    $num=(int)$num;
                     $options = ['limit' => $num,
                     'sort' => ['tao_luc' => -1]];
                 }
@@ -69,25 +76,25 @@
             <form id="ok" action = "user.php" type="get">
             <div class="box">
             <select name="num" class="select" onchange="submitForm()">
-                <option value=10 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 10 user</option>
-                <option value=20 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 20 user</option>
-                <option value=30 <?php if(isset($_GET["num"])&&(int)$_GET["num"]==10) echo ' selected';?>>hiển thị: 30 user</option>
-                <option value='' <?php if(isset($_GET["num"])&&(int)$_GET["num"]=='') echo ' selected';?>>hiển thị tất cả</option>
+                <option value=10 <?php if(isset($_GET["num"])&&(int)$_GET["num"]===10) echo ' selected';?>>hiển thị: 10 user</option>
+                <option value=20 <?php if(isset($_GET["num"])&&(int)$_GET["num"]===20) echo ' selected';?>>hiển thị: 20 user</option>
+                <option value=30 <?php if(isset($_GET["num"])&&(int)$_GET["num"]===30) echo ' selected';?>>hiển thị: 30 user</option>
+                <option value='' <?php if(isset($_GET["num"])&&(int)$_GET["num"]==='') echo ' selected';?>>hiển thị tất cả</option>
             </select>
             <select name="status" class="select" onchange="submitForm()">
-                <option value="" <?php if(isset($_GET["status"])&&(int)$_GET["status"]=='') echo ' selected';?>>Tất cả trạng thái</option>
-                <option value=0 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==0) echo ' selected';?>>Chưa được duyệt</option>
-                <option value=1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==1) echo ' selected';?>>Đã duyệt</option>
-                <option value=-1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==-1) echo ' selected';?>>Đã từ chối</option>
-                <option value=2 <?php if(isset($_GET["status"])&&(int)$_GET["status"]==2) echo ' selected';?>>Đã khoá</option>
+                <option value="" <?php if(isset($_GET["status"])&&empty($_GET["status"])&&!is_numeric($_GET["status"])) echo ' selected';?>>Tất cả trạng thái</option>
+                <option value=0 <?php if(isset($_GET["status"])&&(int)$_GET["status"]===0&&is_numeric($_GET["status"])) echo ' selected';?>>Chưa được duyệt</option>
+                <option value=1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]===1) echo ' selected';?>>Đã duyệt</option>
+                <option value=-1 <?php if(isset($_GET["status"])&&(int)$_GET["status"]===-1) echo ' selected';?>>Đã từ chối</option>
+                <option value=2 <?php if(isset($_GET["status"])&&(int)$_GET["status"]===2) echo ' selected';?>>Đã khoá</option>
             </select>
             <select name="role" class="select" onchange="submitForm()">
-                <option value="" <?php if(isset($_GET["role"])&&(int)$_GET["role"]=='') echo ' selected';?>>Phân loại: Tất cả user</option>
+                <option value="" <?php if(isset($_GET["role"])&&(int)$_GET["role"]===''&&!is_numeric($_GET["status"])) echo ' selected';?>>Phân loại: Tất cả user</option>
                 <?php $collectionselect = $database -> selectCollection("rank");
                 $rankselect = $collectionselect -> find();
                 foreach($rankselect as $rank){
                     echo '<option value='.$rank->ma_rank;
-                    if(isset($_GET["role"])){ if((int)$_GET["role"]==(int)$rank->ma_rank&&$_GET["role"]!=0) echo ' selected';}
+                    if(isset($_GET["role"])){ if((int)$_GET["role"]===(int)$rank->ma_rank&&is_numeric($_GET["role"])) echo ' selected';}
                     echo '>'.$rank->ten_rank.'</option>';
                 }
                 ?>
@@ -120,22 +127,22 @@
                     echo '<tr>
                     <td><a>'.$document->email.'</a>
                     <td><a>'.$document->ten.'</a>';
-                    if($document->trang_thai_tai_khoan==0){
+                    if($document->trang_thai_tai_khoan===0){
                         echo '<td><p style="color: red">Chưa được duyệt</p></td>';
                     }
-                    if($document->trang_thai_tai_khoan==1){
+                    if($document->trang_thai_tai_khoan===1){
                         echo '<td><p style="color: green">Đã được duyệt</p></td>';
                     }
-                    if($document->trang_thai_tai_khoan==2){
+                    if($document->trang_thai_tai_khoan===2){
                         echo '<td><p style="color: red">Tài khoản đã bị khoá</p></td>';
                     }
-                    if($document->trang_thai_tai_khoan==-1){
+                    if($document->trang_thai_tai_khoan===-1){
                         echo '<td><p style="color: red">Đã từ chối</p></td>';
                     }
                     
                     $collection2 = $database -> selectCollection("rank") ;
                     $rank = $collection2 -> findOne(["ma_rank" => $document->ma_rank]);
-                    if($document->ma_rank==0){
+                    if($document->ma_rank===0){
                         echo '<td><p style="color: red">'.$rank->ten_rank.'</p></td>';
                     }
                     else{
@@ -145,7 +152,7 @@
                     $date = new DateTime($date1->toDateTime()->format('Y-m-d H:i:s'));
                     $id = (string)  $document->_id;
                     echo '<td>'.$date->format('d-m-Y').'</td><td>';
-                    if($document->trang_thai_tai_khoan==0){
+                    if($document->trang_thai_tai_khoan===0){
                         echo '<form action="action_user.php" type="post"><input type="hidden" name="id" value="'.$id.'"><button type="submit" name="user_action" value="accept" class="confirm-btn">Duyệt</button><button type="submit" name="user_action" value="cancel" class="cancel-btn">Từ chối</button></form>';
                     }
                     echo '<form action="userDetail.php" type="post"><input type="hidden" name="id" value="'.$id.'"><button type="submit" name="getUser" class="confirm-btn" style="background-color: green;">Chi tiết</button></form></td>
