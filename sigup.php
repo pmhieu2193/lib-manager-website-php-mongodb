@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clothing : Create Account</title>
+    <title>Black Liblary : Create Account</title>
 
     <link rel="stylesheet" href="css/sigup.css">
 </head>
@@ -20,6 +20,9 @@
     <div class="container">
         <img src="img/dark-logo.png" class="logo "alt="">
         <form action="sigup1.php" method="post">
+            <?php if (isset($_GET['error'])) { ?>
+                <a><?php echo $_GET['error']; ?><a>
+            <?php } ?>
             <input type="text" autocomplete="off" name="email" placeholder="Email">
             <input type="password" autocomplete="off" name="password" placeholder="Mật khẩu">
             <input type="text" autocomplete="off" name="name" placeholder="Họ tên">
@@ -33,7 +36,7 @@
             </label>
             <br>
             <label><a>Ngày sinh</a></label>
-            <input type="date" autocomplete="off" id="date" placeholder="Ngày sinh">
+            <input type="date" autocomplete="off" name="date" placeholder="Ngày sinh">
             <br>
             <label for="fruit">Bạn là: </label>
             <select name="rank" id="rank">
@@ -47,8 +50,8 @@
             <label for="term-and-cond">đồng ý <a href="">điều khoản và chính sách bảo mật</a></label>
             <button type="submit" class="submit-btn">Tạo Tài Khoản</button>
         </form>
-        <a href="login.html" class="link">Đã có tài khoản? Nhấn để đăng nhập</a>
-	<a href="index.html" class="link">Quay lại trang chủ</a>
+        <a href="login.php" class="link">Đã có tài khoản? Nhấn để đăng nhập</a>
+	<a href="index.php" class="link">Quay lại trang chủ</a>
     </div>
 
     <!-- Tại sao chỗ này lại ko thể liên kết đến file js? -->
