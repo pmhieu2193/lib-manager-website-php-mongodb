@@ -25,20 +25,22 @@ include("connection.php");
         <p class="alert-msg">Thông báo lỗi</p>
     </div>
     <img src="img/dark-logo.png" class="logo" alt="">
-    <div class="nav-space">
-        <div class="nav-admin">
-            <img src="img/user.png">
-            <p class="add-product-title name-admin">Chào mừng Hiếu</p>
-            <button class="btn btn-new-product" id="new-product" onclick="location.href='login.html'">Đăng xuất</button>
+    <?php
+    include("navadmin.php");
+    ?>
+    <div class="box">
+        <div class="search">
+            <form class="form-search" action="admin.php" method="GET" accept-charset="UTF-8">
+                <input class="search-input" type="text" name="timkiem" placeholder="Tìm sách">
+                <input type="submit" value="Tìm kiếm" class="search-btn">
+            </form>
         </div>
-        <a class="add-product-title nav-link" href="publisher.php">quản lý user</a>
     </div>
-    <!--products list-->
 
     <div class="product-listing">
         <div class="add-product">
-            <p class="add-product-title">quản lý sản phẩm</p>
-            <a href="editProduct.php"><button class="btn btn-new-product" id="new-product">&#43; Thêm sản phẩm</button></a>
+            <p class="add-product-title">Quảng lý Sách</p>
+            <a href="editProduct.php"><button class="btn btn-new-product" id="new-product">&#43; Thêm Sách </button></a>
         </div>
         <img src="img/no-products.png" class="no-product-image hide" alt="">
 
@@ -55,15 +57,30 @@ include("connection.php");
             } else {
                 echo 'Không có sự thay đổi hoặc không tìm thấy sản phẩm.';
             }
-
             exit;
         }
-
-        $result = $collection->find([]);
+        $searchTerm = '';
+        if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['timkiem'])) {
+            $timKiem = $_GET['timkiem'];
+            $searchTerm = $timKiem;
+            if (!empty($timKiem)) {
+                $escapedTerm = preg_quote($timKiem, '/');
+                $regexPattern = new \MongoDB\BSON\Regex($escapedTerm, 'i');
+                $result = $collection->find(['ten_sach' => ['$regex' => $regexPattern->getPattern(), '$options' => $regexPattern->getFlags()]]);
+            } else {
+                echo 'Vui lòng nhập từ khóa tìm kiếm.';
+                $result = $collection->find([]);
+            }
+        } else {
+            $result = $collection->find([]);
+        }
+        if (!empty($searchTerm)) {
+            echo '<p class="search-tearm">Kết quả tìm kiếm: ' . htmlspecialchars($searchTerm) . '</p>';
+        }
         echo '<div class="product-container2">';
         foreach ($result as $document) {
             echo '<div class="product-card2">';
-            echo '<div class="product-image">'; 
+            echo '<div class="product-image">';
             $status_text = ($document->trang_thai_sach == 0) ? 'Ẩn' : 'Hiển Thị';
             echo '<span class="tag">' . $status_text . '</span>';
 
@@ -82,6 +99,8 @@ include("connection.php");
         }
         echo '</div>';
         ?>
+        
+
 
     </div>
     <div id="overlay" class="overlay">

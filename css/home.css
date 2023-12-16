@@ -225,3 +225,32 @@
 .error-hide{
     font-size: 15px;
 }
+
+.search-tearm{
+    position: absolute;
+    top: 15%;
+    left: 5.2%;
+}
+
+.search-input {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+.search-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #2c2c2b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-search {
+    display: inline-block;
+    margin: 0; /* Remove default margin */
+}

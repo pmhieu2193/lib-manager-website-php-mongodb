@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
-
+<?php include("connection.php"); ?>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,13 +8,16 @@
     <title>Kết quả tìm kiếm cho MENARMOR</title>
 
     <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/cart.css">
     <link rel="stylesheet" href="css/search.css">
+    <link rel="stylesheet" href="css/sigup.css">
+    <link rel="stylesheet" href="css/admin.css">
 
 </head>
 
 <body>
-    
-    <?php include("nav.php"); ?>
+    <img src="img/dark-logo.png" class="logo" alt="">
+    <?php include("navadmin.php"); ?>
 
     <?php
     $searchTerm = '';
@@ -29,10 +32,11 @@
             $cursor = $collection->find(['ten_sach' => ['$regex' => $regexPattern->getPattern(), '$options' => $regexPattern->getFlags()]]);
             $results = iterator_to_array($cursor);
             $count = count($results);
-            
+
             if ($count > 0) {
                 echo '<section class="search-results">';
                 echo '<div class="product-container">';
+
                 foreach ($results as $result) {
                     echo '<div class="product-card">';
                     echo '<div class="product-image">';
@@ -56,44 +60,6 @@
     }
     ?>
     <p class="search-tearm">Kết quả tìm kiếm: <?php echo htmlspecialchars($searchTerm); ?></p>
-
-    <?php
-    $collectionSach = $database->selectCollection('sach');
-    $collectionTheLoai = $database->selectCollection('the_loai');
-    $maTheLoai = isset($_GET['ma_the_loai']) ? filter_var($_GET['ma_the_loai'], FILTER_SANITIZE_NUMBER_INT) : '';
-    if ($maTheLoai !== '') {
-        $theLoaiDocument = $collectionTheLoai->findOne(['ma_the_loai' => (int) $maTheLoai]);
-        if ($theLoaiDocument) {
-            $result = $collectionSach->find(['ma_the_loai' => (int) $maTheLoai]);
-            $documents = iterator_to_array($result);
-            $documentCount = count($documents);
-
-            if ($documentCount > 0) {
-                echo '<div>Thể Loại: ' . $theLoaiDocument->ten_the_loai . '</div>';
-                echo '<section class="search-results">';
-                echo '<div class="product-container">';
-                foreach ($documents as $document) {
-                    echo '<div class="product-card">';
-                    echo '<div class="product-image">';
-                    echo '<img src="' . $result->anh_bia . '" class="product-thumb" alt="" onclick="location.href=\'book.php?_id=' . $result->_id . '\'">';
-                    echo '</div>';
-                    echo '<div class="product-info">';
-                    echo '<h2 class="product-brand">' . $document->ten_sach . '</h2>';
-                    echo '<p class="product-short-des">' . $document->tac_gia . '</p>';
-                    echo '<p class="product-short-des">' . $document->vi_tri . '</p>';
-                    echo '</div>';
-                    echo '</div>';
-                }
-                echo '</div>';
-                echo '</section>';
-            } else {
-                echo 'Không tìm thấy sản phẩm.';
-            }
-        } else {
-            echo 'Không tìm thấy thể loại.';
-        }
-    }
-    ?>
 
     <footer></footer>
 

@@ -46,21 +46,6 @@
     outline: none;
 }
 
-.search-btn{
-    width: 30%;
-    height: 40px;
-    padding: 10px 20px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    background: #383838;
-    color: #fff;
-    text-transform: capitalize;
-    font-size: 15px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
 .search-box::placeholder{
     color: #9a9a9a;
 }

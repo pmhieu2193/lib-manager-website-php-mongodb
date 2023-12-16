@@ -10,7 +10,7 @@ echo'
     echo "'checkin.php'";
     echo '">Check in</p>';
     echo '<p class="add-product-title nav-link" onclick="location.href=';
-    echo "'checkin.php'";
+    echo "'admin.php'";
     echo '">Quản lý sách</p>';
     echo '<p class="add-product-title nav-link" onclick="location.href=';
     echo "'user.php'";
