@@ -48,7 +48,7 @@
                 echo '</div>';
                 echo '</section>';
             } else {
-                echo 'Không tìm thấy sản phẩm.';
+                echo '<h3>Không tìm thấy sách.</h3>';
             }
         } else {
             echo 'Vui lòng nhập từ khóa tìm kiếm.';
@@ -69,13 +69,13 @@
             $documentCount = count($documents);
 
             if ($documentCount > 0) {
-                echo '<div>Thể Loại: ' . $theLoaiDocument->ten_the_loai . '</div>';
+                echo '<div class="cate-search">Thể Loại: ' . $theLoaiDocument->ten_the_loai . '</div>';
                 echo '<section class="search-results">';
                 echo '<div class="product-container">';
                 foreach ($documents as $document) {
                     echo '<div class="product-card">';
                     echo '<div class="product-image">';
-                    echo '<img src="' . $result->anh_bia . '" class="product-thumb" alt="" onclick="location.href=\'book.php?_id=' . $result->_id . '\'">';
+                    echo '<img src="' . $document->anh_bia . '" class="product-thumb" alt="" onclick="location.href=\'book.php?_id=' . $document->_id . '\'">';
                     echo '</div>';
                     echo '<div class="product-info">';
                     echo '<h2 class="product-brand">' . $document->ten_sach . '</h2>';

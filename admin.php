@@ -58,7 +58,11 @@ include("connection.php");
     <div class="product-listing">
         <div class="add-product">
             <p class="add-product-title">Quảng lý Sách</p>
+            <div>
             <a href="editProduct.php"><button class="btn btn-new-product" id="new-product">&#43; Thêm Sách </button></a>
+            <a href="publisher.php"><button class="btn btn-new-product" id="new-product">&#43; Thêm Nhà Xuất Bản </button></a>
+            <a href="category.php"><button class="btn btn-new-product" id="new-product">&#43; Thêm Thể Loại Sách </button></a>
+            </div>
         </div>
         <img src="img/no-products.png" class="no-product-image hide" alt="">
 
@@ -117,7 +121,7 @@ include("connection.php");
             echo '<p class="theloai-info">' . $theloaiText . '</p>';
         }
         if (!empty($searchTerm)) {
-            echo '<p class="search-tearm">Kết quả tìm kiếm: ' . htmlspecialchars($searchTerm) . '</p>';
+            echo '<h2 class="search-tearm">Kết quả tìm kiếm: ' . htmlspecialchars($searchTerm) . '</h2>';
         }
         echo '<div class="product-container2">';
         foreach ($result as $document) {

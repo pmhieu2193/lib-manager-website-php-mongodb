@@ -47,12 +47,6 @@ include("connection.php");
             <p class="add-product-title">Quản lý Nhà Xuất Bản</p>
             <a href="editPublisher.php"><button class="btn btn-new-product" id="new-user">&#43;Thêm Nhà Xuất Bản</button></a>
         </div>
-        <div class="box">
-            <div class="search">
-                <input type="text" placeholder="Tìm kiếm...">
-                <button class="search-btn">&#9906; Tìm kiếm</button>
-            </div>
-        </div>
         <div class="small-container oder-page">
             <table>
                 <tr>
@@ -62,6 +56,7 @@ include("connection.php");
                     <th class="table-btn-zone">Hành động</th>
                 </tr>
                 <?php
+                error_reporting(0);
                 $collection = $database->selectCollection('nha_xuat_ban');
                 $result = $collection->find([]);
 
@@ -74,7 +69,7 @@ include("connection.php");
                 ?>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?= $document->_id ?>">
-                        <button type="submit" class="canceled-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">xoá</button>
+                        <button type="submit" class="cancel-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">xoá</button>
                     </form>
                 <?php
                     echo '</td>';
@@ -83,12 +78,6 @@ include("connection.php");
                 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_id'])) {
                     $delete_id = $_POST['delete_id'];
                     $result = $collection->deleteOne(['_id' => new MongoDB\BSON\ObjectID($delete_id)]);
-
-                    if ($result->getDeletedCount() > 0) {
-                        echo 'Xóa nhà xuất bản thành công!';
-                    } else {
-                        echo 'Xóa nhà xuất bản thất bại';
-                    }
                     header("Location: publisher.php");
                     exit;
                 }

@@ -40,6 +40,7 @@
                                 $bookIdToRemove = $_POST["book_remove"];
                                 $userId = (string)$_SESSION["_id"];
                                 $deleteResult = $collection->deleteOne(['ma_sach' => $bookIdToRemove, 'ma_user' => $userId]);
+                                echo 'delete';
                             }
 
                             $wishList = $collection->find(['ma_user' => (string)$_SESSION["_id"]]);
@@ -50,7 +51,7 @@
                                 $filter = ['_id' => new MongoDB\BSON\ObjectId($id_sach)];
                                 $collection2 = $database->selectCollection("sach");
                                 $sach = $collection2->findOne($filter);
-
+                                echo 'test';
                                 if (!$sach) {
                                     echo 'Sách đã bị xóa hoặc ẩn khỏi thư viện';
                                     continue;

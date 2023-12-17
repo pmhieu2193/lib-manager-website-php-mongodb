@@ -20,6 +20,10 @@ include("connection.php");
     <img src="img/dark-logo.png" class="logo" alt="">
 
     <?php
+    $result = [];
+    $ranks = $database->selectCollection("rank")->find();
+    $categories = $database->selectCollection("the_loai")->find();
+    $publishers = $database->selectCollection("nha_xuat_ban")->find();
     $collection = $database->selectCollection("sach");
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['form_submitted'])) {
         $ten_sach = $_POST['name'];
@@ -29,7 +33,6 @@ include("connection.php");
         $ngon_ngu = $_POST['language'];
         $nam_xuat_ban = $_POST['year'];
         $vi_tri = $_POST['location'];
-        $trang_thai_sach = (int)$_POST['status'];
         $ma_rank = (int)$_POST['rank'];
         $ma_the_loai = (int)$_POST['category'];
         $ma_nxb = (int)$_POST['publisher'];
@@ -41,16 +44,17 @@ include("connection.php");
             'ten_sach' => $ten_sach,
             'so_luong' => $so_luong,
             'mo_ta' => $mo_ta,
+            'ngay_nhap' => new MongoDB\BSON\UTCDateTime(strtotime($ngay_nhap) * 1000),
             'tac_gia' => $tac_gia,
             'ngon_ngu' => $ngon_ngu,
             'nam_xuat_ban' => $nam_xuat_ban,
+            'anh_bia' => $anh_bia,
             'vi_tri' => $vi_tri,
-            'trang_thai_sach' => $trang_thai_sach,
+            'trang_thai_sach' => 1,
             'ma_rank' => $ma_rank,
             'ma_the_loai' => $ma_the_loai,
             'ma_nxb' => $ma_nxb,
-            'ngay_nhap' => new MongoDB\BSON\UTCDateTime(strtotime($ngay_nhap) * 1000),
-            'anh_bia' => $anh_bia,
+            
         ];
         if (empty($product_id)) {
             //Tự động tăng
@@ -84,11 +88,11 @@ include("connection.php");
             <form class="form-total" method="post" enctype="multipart/form-data">
                 <h3 class="head-form">Chỉnh Sửa Sách</h3>
                 <label class="label-form" for="">Tên Sách</label>
-                <input class="text-form" type="text" id="name" name="name"  value="<?= $result['ten_sach'] ?>">
+                <input class="text-form" type="text" id="name" name="name" value="<?= $result['ten_sach'] ?>">
                 <label class="label-form" for="">Số Lượng</label>
-                <input class="text-form" type="number" id="quantity" name="quantity"  value="<?= $result['so_luong'] ?>">
+                <input class="text-form" type="number" id="quantity" name="quantity" value="<?= $result['so_luong'] ?>">
                 <label class="label-form" for="">Mô Tả</label>
-                <input class="text-form" type="text" id="description" name="description"  value="<?= $result['mo_ta'] ?>">
+                <input class="text-form" type="text" id="description" name="description" value="<?= $result['mo_ta'] ?>">
                 <label class="label-form" for="">Tác Giả</label>
                 <input class="text-form" type="text" id="author" name="author" value="<?= $result['tac_gia'] ?>">
                 <label class="label-form" for="">Ngôn Ngữ</label>
@@ -97,14 +101,32 @@ include("connection.php");
                 <input class="text-form" type="text" id="year" name="year" value="<?= $result['nam_xuat_ban'] ?>">
                 <label class="label-form" for="">Vị Trí</label>
                 <input class="text-form" type="text" id="location" name="location" value="<?= $result['vi_tri'] ?>">
-                <label class="label-form" for="">Trạng Thái Sách</label>
-                <input class="text-form" type="text" id="status" name="status" value="<?= $result['trang_thai_sach'] ?>">
                 <label class="label-form" for="">Cấp Bậc</label>
-                <input class="text-form" type="text" id="rank" name="rank" value="<?= $result['ma_rank'] ?>">
+                <select id="rank" name="rank">
+                    <?php foreach ($ranks as $rank) : ?>
+                        <option value="<?= $rank['ma_rank'] ?>" <?= (isset($result['ma_rank']) && $result['ma_rank'] == $rank['ma_rank']) ? 'selected' : '' ?>>
+                            <?= $rank['ten_rank'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
                 <label class="label-form" for="">Thể Loại Sách</label>
-                <input class="text-form" type="text" id="category" name="category" value="<?= $result['ma_the_loai'] ?>">
+                <select id="category" name="category">
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?= $category['ma_the_loai'] ?>" <?= (isset($result['ma_the_loai']) && $result['ma_the_loai'] == $category['ma_the_loai']) ? 'selected' : '' ?>>
+                            <?= $category['ten_the_loai'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
                 <label class="label-form" for="">Nhà Xuất Bản</label>
-                <input class="text-form" type="text" id="publisher" name="publisher" value="<?= $result['ma_nxb'] ?>">
+                <select id="publisher" name="publisher">
+                    <?php foreach ($publishers as $publisher) : ?>
+                        <option value="<?= $publisher['ma_nxb'] ?>" <?= (isset($result['ma_nxb']) && $result['ma_nxb'] == $publisher['ma_nxb']) ? 'selected' : '' ?>>
+                            <?= $publisher['ten_nxb'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
                 <input type="hidden" name="product_id" value="<?= $product_id ?>">
                 <label for="date">Ngày Nhập:</label>
                 <input type="date" id="date" name="date" value="<?= $result['ngay_nhap'] ?>" required><br><br>
@@ -112,7 +134,7 @@ include("connection.php");
                 <input type="file" id="image" name="image" accept="image/*" value="<?= $result['anh_bia'] ?>"><br><br>
                 <input type="hidden" name="form_submitted" value="1">
                 <input class="submit-form" type="submit" value="Cập Nhật">
-            <a class="submit-form2" href="admin.php">Hủy</a>
+                <a class="submit-form2" href="admin.php">Hủy</a>
             </form>
         <?php
         } else {
@@ -136,14 +158,32 @@ include("connection.php");
             <input class="text-form" type="text" id="year" name="year" value="">
             <label class="label-form" for="">Vị Trí</label>
             <input class="text-form" type="text" id="location" name="location" value="">
-            <label class="label-form" for="">Trạng Thái Sách</label>
-            <input class="text-form" type="text" id="status" name="status" value="">
             <label class="label-form" for="">Cấp Bậc</label>
-            <input class="text-form" type="text" id="rank" name="rank" value="">
+            <select id="rank" name="rank">
+                <?php foreach ($ranks as $rank) : ?>
+                    <option value="<?= $rank['ma_rank'] ?>" <?= (isset($result['ma_rank']) && $result['ma_rank'] == $rank['ma_rank']) ? 'selected' : '' ?>>
+                        <?= $rank['ten_rank'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             <label class="label-form" for="">Thể Loại Sách</label>
-            <input class="text-form" type="text" id="category" name="category" value="">
+            <select id="category" name="category">
+                <?php foreach ($categories as $category) : ?>
+                    <option value="<?= $category['ma_the_loai'] ?>" <?= (isset($result['ma_the_loai']) && $result['ma_the_loai'] == $category['ma_the_loai']) ? 'selected' : '' ?>>
+                        <?= $category['ten_the_loai'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
             <label class="label-form" for="">Nhà Xuất Bản</label>
-            <input class="text-form" type="text" id="publisher" name="publisher" value="">
+            <select id="publisher" name="publisher">
+                <?php foreach ($publishers as $publisher) : ?>
+                    <option value="<?= $publisher['ma_nxb'] ?>" <?= (isset($result['ma_nxb']) && $result['ma_nxb'] == $publisher['ma_nxb']) ? 'selected' : '' ?>>
+                        <?= $publisher['ten_nxb'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
             <label class="label-form" for="date">Ngày Nhập:</label>
             <input type="date" id="date" name="date" required><br><br>
             <label class="label-form" for="image">Ảnh:</label>
@@ -152,7 +192,7 @@ include("connection.php");
             <input class="submit-form" type="submit" value="Thêm">
             <a class="submit-form2" href="admin.php">Hủy</a>
         </form>
-        
+
     <?php
     }
     ?>

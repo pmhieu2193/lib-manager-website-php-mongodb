@@ -228,7 +228,7 @@
 
 .search-tearm{
     position: absolute;
-    top: 15%;
+    top: 23%;
     left: 5.2%;
 }
 
@@ -253,4 +253,9 @@
 .form-search {
     display: inline-block;
     margin: 0; /* Remove default margin */
+}
+.cate-search{
+    left: 41%;
+    position: absolute;
+    font-size: 30px;
 }

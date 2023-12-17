@@ -61,6 +61,7 @@ include("connection.php");
                     <th class="table-btn-zone">Hành động</th>
                 </tr>
                 <?php
+                error_reporting(0);
                 $collection = $database->selectCollection('the_loai');
                 $result = $collection->find([]);
 
@@ -72,7 +73,7 @@ include("connection.php");
                 ?>
                     <form method="post" style="display:inline;">
                         <input type="hidden" name="delete_id" value="<?= $document->_id ?>">
-                        <button type="submit" class="canceled-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">xoá</button>
+                        <button type="submit" class="cancel-btn" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')">xoá</button>
                     </form>
                 <?php
                     echo '</td>';
@@ -81,14 +82,8 @@ include("connection.php");
                 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_id'])) {
                     $delete_id = $_POST['delete_id'];
                     $result = $collection->deleteOne(['_id' => new MongoDB\BSON\ObjectID($delete_id)]);
-
-                    if ($result->getDeletedCount() > 0) {
-                        echo 'Xóa thể loại';
-                    } else {
-                        echo 'error';
-                    }
                     header("Location: category.php");
-                    exit;
+                    exit();
                 }
                 ?>
 
