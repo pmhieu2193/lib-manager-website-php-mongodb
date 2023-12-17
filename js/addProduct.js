@@ -12,6 +12,7 @@ discountPercentage.addEventListener('input', () => {
         sellingPrice.value=acctualPrice.value - discount;
     }
 })
+
 //upload image handle
 // mấy cái xử lý này trừ cái phần upload hình ảnh ra thì khá giống với login, sigup nên thôi không làm.
 

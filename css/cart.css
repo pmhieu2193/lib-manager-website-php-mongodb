@@ -14,7 +14,7 @@
 
 .back:hover{
     background: #383838;
-    color: red;
+    color: white;
 }
 
 table{
@@ -35,6 +35,8 @@ th{
     font-weight: normal;
     font-size: 20px;
     text-transform: capitalize;
+    border: 2px solid black;
+
 }
 
 td{
@@ -49,6 +51,7 @@ td input{
     padding: 5px;
     border: 2px solid black;
     font-size: 16px;
+    border: 2px solid black;
 }
 
 td a{

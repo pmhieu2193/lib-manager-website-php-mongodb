@@ -28,8 +28,8 @@
             <input type="password" autocomplete="off" name="password" placeholder="Mật Khấu">
             <button type="submit" class="submit-btn">Đăng  nhập</button>
         </form>
-        <a href="sigup.html" class="link">chưa có tài khoản? Đăng ký</a>
-	<a href="index.html" class="link">quay lại trang chủ</a>
+        <a href="sigup.php" class="link">chưa có tài khoản? Đăng ký</a>
+	<a href="index.php" class="link">quay lại trang chủ</a>
     </div>
 
     <!--<script src="js/form.js"></script> -->

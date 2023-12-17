@@ -17,12 +17,18 @@ deleteProduct.addEventListener('click', () => {
 })
 
 //alert
-const showAlert = (msg) =>{
-    let alertBox = document.querySelector('.alert-box');
-    let alertMsg = document.querySelector('.alert-msg');
-    alertMsg.innerHTML = msg;
-    alertBox.classList.add('show');
-    setTimeout(() => {
-        alertBox.classList.remove('show');
-    }, 3000);
+
+function submitForm() {
+    document.getElementById("ok").submit();
+  }
+
+
+function showForm() {
+    var formContainer = document.querySelector('.form-container');
+    formContainer.style.display = 'block';
+}
+
+function hideForm() {
+    var formContainer = document.querySelector('.form-container');
+    formContainer.style.display = 'none';
 }

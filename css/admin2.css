@@ -36,12 +36,9 @@ padding-left: 0px;
 }
 
 .search{
-    margin-left: 43%;
+    margin-left: 800px;
 }
 
-.search-btn{
-    margin-top: 20px;
-}
 
 /*product listing*/
 .add-product{
@@ -56,6 +53,7 @@ padding-left: 0px;
 }
 
 .add-product-title{
+    text-decoration: none;
     text-transform: capitalize;
     color: #383838;
     font-size: 20px;
@@ -70,10 +68,7 @@ padding-left: 0px;
     display: none;
 }
 /* //// */
-.product-container{
-    padding: 0;
-    height: 525px;
-}
+
 
 .tag{
     position: absolute;
@@ -93,7 +88,7 @@ padding-left: 0px;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1 px solid black;
+    border: 1px solid black;
     outline: none;
     transition: 0.5s;
     background: #ffffff;
@@ -103,7 +98,7 @@ padding-left: 0px;
 }
 
 .card-action-btn img{
-    height: 18px;
+    height: 21px;
 }
 
 .open-btn{
@@ -120,7 +115,7 @@ padding-left: 0px;
     border: 4px solid red;
 }
 
-.product-card:hover .card-action-btn{
+.product-card2:hover .card-action-btn{
     opacity: 1;
     pointer-events: all;
 }
@@ -235,6 +230,7 @@ td:last-child{
     margin-right: 4px;
 }
 .confirm-btn{
+    text-decoration: none;
     border-radius: 5px;
     background: rgb(41, 41, 255);
     color: white;
@@ -292,7 +288,7 @@ tr:nth-child(even) {
 
 tr:hover{
     background: grey;
-    color:rgb(255, 255, 255);
+    color:rgb(255, 114, 114);
 } 
 
 .pre-next-btn{
@@ -385,8 +381,155 @@ tr:hover{
     color: red;
 }
 
-.form-container{
+  
+.form-hero{
+    display: flex;
+    justify-content: space-around;
+}
+
+.text-form{
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 24px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    background: #fff;
+    border: none;
+    outline: none;
+    color: #383838;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
+    font-family: 'Mulish', sans-serif;
+}
+
+.close-but{
+    cursor: pointer;
+    right: 1%;
+    top: 1%;
+    position: fixed;
+    padding: 5px;
+    border-radius: 7px;
+    background-color: #f2f2f2;
+}
+
+/* Style cho overlay */
+.overlay {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.popup {
+    left: 43%;
+    bottom: 50%;
+    position: absolute;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.book-brand{
+     
+
+}
+
+.img-edit{
+    top: 20%;
+    position: absolute;
+    left: 24%;
+}
+
+.hero-popup{
+    display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.close-btn {
+    background-color: rgb(20, 219, 49);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn2 {
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn3{
+    background-color: rgb(116, 116, 116);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.item-popup{
+    margin: 15px;
+}
+
+.product-short-des2{
+    font-family: -webkit-body;
+    margin-top: 5px;
+    color:#383838;
+    padding: 5px 0px;
+}
+
+.product-card2{
+    flex: 0 0 auto;
+    width: 85%;
+    height: 450px;
+}
+
+.product-container2{
+    padding: 50px 0vw;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    height: auto;
+    grid-row-gap: 70px
+}
+
+.head-form{
+    font-size: 45px;
+    display: flex;
+    justify-content: center;
+}
+
+.label-form{
+    font-size: 20px;
+}
+
+.submit-form{
+    font-size: 15px;
+    padding: 10px;
+    background-color: rgb(77, 216, 77);
+    border-radius: 10px;
+}
+
+.submit-form2{
+    text-decoration: none;
+    color: #fff;
+    margin-left: 10px;
+    border: 2px solid black;
+    font-size: 16px;
+    padding: 10px;
+    background-color: rgb(225, 45, 45);
+    border-radius: 10px;
 }

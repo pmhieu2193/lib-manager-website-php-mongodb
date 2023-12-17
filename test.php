@@ -12,6 +12,6 @@
         'ma_sach' =>2,
         'ma_user' =>2
     ]);
-    printf("insert %d document", $insert->getInsertCount());
+    printf("insert %d document", $insert->getFindCount());
 
 ?>
